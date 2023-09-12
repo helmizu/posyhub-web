@@ -10,6 +10,8 @@ type Theme = ThemeConfig & {
 const theme: Theme = {
   token: {
     fontSize: 16,
+    colorText: '#21272A',
+    colorTextSecondary: '#697077',
     colorBgBase: '#F4F7F5',
     colorPrimary: '#7BAF59',
     colorSecondary: '#AD4053',

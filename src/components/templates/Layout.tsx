@@ -1,13 +1,16 @@
+import React from 'react';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Layout as AntLayout, Menu, Button, theme, Avatar, Typography } from 'antd';
+import { Layout as AntLayout, Menu, theme, Avatar, Typography, Dropdown, Button } from 'antd';
+import { filterMenuByRole, findKeysForPath } from '@/utils/layout';
+import { SIDEBAR } from '@/constants/layout';
+import { UilAngleDown, UilSignout } from '@iconscout/react-unicons';
 
 const { Header, Sider, Content } = AntLayout;
 
@@ -16,11 +19,37 @@ interface ILayoutProps {
   children: React.ReactNode;
 }
 
+const ROLE = 'admin';
+const MENU_ITEMS = [
+  {
+    label: <Link href="/logout">Logout</Link>,
+    key: 'logout',
+    icon: <UilSignout size={16} />
+  },
+];
+
+const mapMenu = (_menu: any[]): any[] | undefined => {
+  if (!_menu || !_menu?.length) return undefined;
+  return _menu.map(menu => {
+    if (!menu.label) return menu;
+    return {
+      key: menu.key,
+      icon: menu.icon ? React.createElement(menu.icon) : undefined,
+      children: mapMenu(menu?.children),
+      label: menu.path ? (
+        <Link href={menu.path}>{menu.label}</Link>
+      ) : menu.label,
+    };
+  });
+};
+
 const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-  const {
-    token: { colorWhite, colorBgBase, colorPrimary },
-  } = theme.useToken();
+  const { token: { colorWhite, colorTextSecondary, colorPrimary } } = theme.useToken();
+  const router = useRouter();
+  const activePath = router.pathname;
+  const mappedSidebar = filterMenuByRole(SIDEBAR as any, ROLE);
+  const [parentKey, childKey] = findKeysForPath(mappedSidebar, activePath) ?? [];
+  const activeKey = childKey || parentKey;
 
   return (
     <div style={{ height: '100vh' }}>
@@ -28,46 +57,30 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
         <title>Posyhub | {title}</title>
       </Head>
       <AntLayout style={{ height: '100%' }}>
-        <Sider collapsed={collapsed} style={{ backgroundColor: colorWhite }}>
+        <Sider style={{ backgroundColor: colorWhite }}>
           <div style={{ paddingInline: 24, paddingBlock: 16, display: 'inline-flex', gap: 8 }}>
             <Avatar>P</Avatar>
-            {!collapsed && (<Typography.Title level={4} style={{ margin: 0 }}>Posyhub</Typography.Title>)}
+            <Typography.Title level={4}>Posyhub</Typography.Title>
           </div>
           <Menu
             style={{ backgroundColor: colorWhite }}
             mode="inline"
-            defaultSelectedKeys={['1']}
-            items={[
-              {
-                key: '1',
-                icon: <UserOutlined />,
-                label: 'nav 1',
-              },
-              {
-                key: '2',
-                icon: <VideoCameraOutlined />,
-                label: 'nav 2',
-              },
-              {
-                key: '3',
-                icon: <UploadOutlined />,
-                label: 'nav 3',
-              },
-            ]}
+            selectedKeys={[activeKey]}
+            items={mapMenu(mappedSidebar)}
           />
         </Sider>
         <AntLayout>
-          <Header style={{ padding: 0, background: colorWhite }}>
-            {/* <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                fontSize: '16px',
-                width: 64,
-                height: 64,
-              }}
-            /> */}
+          <Header style={{ background: colorWhite, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingInline: 24 }}>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center', }}>
+              <Avatar size="large" style={{ backgroundColor: colorPrimary }}>N</Avatar>
+              <div style={{ display: 'flex', flexDirection: 'column', minWidth: 80 }}>
+                <Typography.Text strong>Name</Typography.Text>
+                <Typography.Text style={{ color: colorTextSecondary, fontSize: 14 }}>Username</Typography.Text>
+              </div>
+              <Dropdown trigger={['click']} menu={{ items: MENU_ITEMS }}>
+                <Button type="text" icon={<UilAngleDown />} style={{ borderRadius: '50%' }} />
+              </Dropdown>
+            </div>
           </Header>
           <Content
             style={{
