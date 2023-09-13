@@ -24,11 +24,11 @@ export const SIDEBAR = [
     path: '/dashboard/toddler',
   },
   {
-    key: 'pregnant',
+    key: 'pregnant-mother',
     label: 'Ibu Hamil',
     icon: UilBabyCarriage,
     roles: ['admin', 'kader'],
-    path: '/dashboard/pregnant',
+    path: '/dashboard/pregnant-mother',
   },
 ];
 
