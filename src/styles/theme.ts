@@ -9,10 +9,10 @@ type Theme = ThemeConfig & {
 
 const theme: Theme = {
   token: {
-    fontSize: 16,
+    fontSize: 14,
     colorText: '#21272A',
     colorTextSecondary: '#697077',
-    colorBgBase: '#F4F7F5',
+    // colorBgBase: '#F4F7F5',
     colorPrimary: '#7BAF59',
     colorSecondary: '#AD4053',
     colorDefault: '#999999',
@@ -21,6 +21,12 @@ const theme: Theme = {
     colorWarning: '#d89f1b',
     colorError: '#f44336',
   },
+  components: {
+    Button: {
+      paddingInline: 12,
+      primaryShadow: 'none',
+    }
+  }
 };
 
 export default theme;

@@ -20,7 +20,6 @@ const DatePickerBase = React.forwardRef<Ref, DatePickerBaseProps>(({ onChange, v
       format="DD/MM/YYYY"
       placeholder='DD/MM/YYYY'
       style={{ maxWidth: 660 }}
-      size="large"
       {...props}
       value={dateValue}
       onChange={(date) => onChange?.(date?.toISOString() as string)}
