@@ -1,7 +1,7 @@
 import DatePickerBase from '@/components/DatePickerBase';
 import Field from '@/components/Field';
 import { useYupValidationResolver } from '@/utils/yupResolver';
-import {Button, Checkbox, Input} from 'antd';
+import {Button, Checkbox, Input, Select} from 'antd';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -80,125 +80,170 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
                         </Field>
                     )}
                 />
-                <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-                    <Controller
-                        control={control}
-                        name="phone"
-                        render={({ field, fieldState }) => (
-                            <Field label="No HP / WA" error={fieldState.error?.message}>
-                                <Input {...field} placeholder="+62XXXXXXXX" />
-                            </Field>
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="status"
-                        render={({ field, fieldState }) => (
-                            <Field label="Status Ekonomi" error={fieldState.error?.message}>
-                                <Input {...field} placeholder="Gakin" />
-                            </Field>
-                        )}
-                    />
+                <div style={{ display: 'flex', gap: 16, flexGrow: 2 }}>
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="phone"
+                            render={({ field, fieldState }) => (
+                                <Field label="No HP / WA" error={fieldState.error?.message}>
+                                    <Input {...field} placeholder="+62XXXXXXXX" />
+                                </Field>
+                            )}
+                        />
+                    </div>
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="status"
+                            render={({ field, fieldState }) => (
+                                <Field label="Status Ekonomi" error={fieldState.error?.message}>
+                                    <Select
+                                        {...field}
+                                        mode="tags"
+                                        style={{ width: '100%' }}
+                                        placeholder="Pilih Status Ekonomi"
+                                        options={[
+                                            { value: 'gakin', label: 'Gakin' },
+                                            { value: 'nonGakin', label: 'Non Gakin' },
+                                        ]}
+                                    />
+                                </Field>
+                            )}
+                        />
+                    </div>
                 </div>
                 <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-                    <Controller
-                        control={control}
-                        name="pregnantCount"
-                        render={({ field, fieldState }) => (
-                            <Field label="Hamil Ke" error={fieldState.error?.message}>
-                                <Input {...field} placeholder="2" />
-                            </Field>
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="childBirhDate"
-                        render={({ field, fieldState }) => (
-                            <Field label="Usia Anak Terkecil" error={fieldState.error?.message}>
-                                <Input {...field} placeholder="12" />
-                            </Field>
-                        )}
-                    />
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="pregnantCount"
+                            render={({ field, fieldState }) => (
+                                <Field label="Hamil Ke" error={fieldState.error?.message}>
+                                    <Input {...field} placeholder="2" />
+                                </Field>
+                            )}
+                        />
+                    </div>
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="childBirhDate"
+                            render={({ field, fieldState }) => (
+                                <Field label="Usia Anak Terkecil" error={fieldState.error?.message}>
+                                    <Input {...field} placeholder="12" />
+                                </Field>
+                            )}
+                        />
+                    </div>
                 </div>
                 <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-                    <Controller
-                        control={control}
-                        name="hpht"
-                        render={({ field, fieldState }) => (
-                            <Field label="Haid Terakhir (HPHT)" error={fieldState.error?.message}>
-                                <DatePickerBase {...field} />
-                            </Field>
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="phl"
-                        render={({ field, fieldState }) => (
-                            <Field label="Perkiraan Persalinan (PHL)" error={fieldState.error?.message}>
-                                <DatePickerBase {...field} />
-                            </Field>
-                        )}
-                    />
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="hpht"
+                            render={({ field, fieldState }) => (
+                                <Field label="Haid Terakhir (HPHT)" error={fieldState.error?.message}>
+                                    <DatePickerBase {...field} />
+                                </Field>
+                            )}
+                        />
+                    </div>
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="phl"
+                            render={({ field, fieldState }) => (
+                                <Field label="Perkiraan Persalinan (PHL)" error={fieldState.error?.message}>
+                                    <DatePickerBase {...field} />
+                                </Field>
+                            )}
+                        />
+                    </div>
                 </div>
                 <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-                    <Controller
-                        control={control}
-                        name="birthWeight"
-                        render={({ field, fieldState }) => (
-                            <Field label="Berat Badan" error={fieldState.error?.message}>
-                                <Input {...field} suffix="Kg" placeholder="5" />
-                            </Field>
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="birthHeight"
-                        render={({ field, fieldState }) => (
-                            <Field label="Tinggi Badan" error={fieldState.error?.message}>
-                                <Input {...field} suffix="cm" placeholder="45" />
-                            </Field>
-                        )}
-                    />
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="birthWeight"
+                            render={({ field, fieldState }) => (
+                                <Field label="Berat Badan" error={fieldState.error?.message}>
+                                    <Input {...field} suffix="Kg" placeholder="5" />
+                                </Field>
+                            )}
+                        />
+                    </div>
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="birthHeight"
+                            render={({ field, fieldState }) => (
+                                <Field label="Tinggi Badan" error={fieldState.error?.message}>
+                                    <Input {...field} suffix="cm" placeholder="45" />
+                                </Field>
+                            )}
+                        />
+                    </div>
                 </div>
                 <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-                    <Controller
-                        control={control}
-                        name="tension"
-                        render={({ field, fieldState }) => (
-                            <Field label="Tensi" error={fieldState.error?.message}>
-                                <Input {...field} placeholder="90/60" />
-                            </Field>
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="lila"
-                        render={({ field, fieldState }) => (
-                            <Field label="Lingkat Lengan Atas (LILA)" error={fieldState.error?.message}>
-                                <Input {...field} suffix="cm" placeholder="50" />
-                            </Field>
-                        )}
-                    />
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="tension"
+                            render={({ field, fieldState }) => (
+                                <Field label="Tensi" error={fieldState.error?.message}>
+                                    <Input {...field} placeholder="90/60" />
+                                </Field>
+                            )}
+                        />
+                    </div>
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="lila"
+                            render={({ field, fieldState }) => (
+                                <Field label="Lingkat Lengan Atas (LILA)" error={fieldState.error?.message}>
+                                    <Input {...field} suffix="cm" placeholder="50" />
+                                </Field>
+                            )}
+                        />
+                    </div>
                 </div>
                 <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-                    <Controller
-                        control={control}
-                        name="bloodType"
-                        render={({ field, fieldState }) => (
-                            <Field label="Golongan Darah" error={fieldState.error?.message}>
-                                <Input {...field} placeholder="AB" />
-                            </Field>
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="pudjiRochyatiScore"
-                        render={({ field, fieldState }) => (
-                            <Field label="Skor Pudji Rochyati" error={fieldState.error?.message}>
-                                <Input {...field} placeholder="90" />
-                            </Field>
-                        )}
-                    />
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="bloodType"
+                            render={({ field, fieldState }) => (
+                                <Field label="Golongan Darah" error={fieldState.error?.message}>
+                                    <Select
+                                        {...field}
+                                        mode="tags"
+                                        style={{ width: '100%' }}
+                                        placeholder="Pilih Golongan Darah"
+                                        options={[
+                                            { value: 'a', label: 'A' },
+                                            { value: 'b', label: 'B' },
+                                            { value: 'ab', label: 'AB' },
+                                            { value: 'o', label: 'O' },
+                                        ]}
+                                    />
+                                </Field>
+                            )}
+                        />
+                    </div>
+                    <div style={{width: '50%'}}>
+                        <Controller
+                            control={control}
+                            name="pudjiRochyatiScore"
+                            render={({ field, fieldState }) => (
+                                <Field label="Skor Pudji Rochyati" error={fieldState.error?.message}>
+                                    <Input {...field} placeholder="90" />
+                                </Field>
+                            )}
+                        />
+                    </div>
+
                 </div>
 
                 <Controller

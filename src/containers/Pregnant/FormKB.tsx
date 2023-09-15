@@ -1,7 +1,7 @@
 import DatePickerBase from '@/components/DatePickerBase';
 import Field from '@/components/Field';
 import { useYupValidationResolver } from '@/utils/yupResolver';
-import {Button, Checkbox, Input, Radio} from 'antd';
+import {Button, Checkbox, Input, Radio, Select} from 'antd';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -41,7 +41,16 @@ const FormKB: React.FC<FormKBProps> = ({ onSubmit }) => {
                     name="name"
                     render={({ field, fieldState }) => (
                         <Field label="Nama" error={fieldState.error?.message}>
-                            <Input {...field} placeholder="Pilih nama ibu hamil" />
+                            <Select
+                                {...field}
+                                mode="tags"
+                                style={{ width: '100%' }}
+                                placeholder="Pilih nama ibu hamil"
+                                options={[
+                                    { value: 'citra', label: 'Citra' },
+                                    { value: 'bunga', label: 'Bunga' },
+                                ]}
+                            />
                         </Field>
                     )}
                 />
@@ -94,7 +103,21 @@ const FormKB: React.FC<FormKBProps> = ({ onSubmit }) => {
                     name="alokon"
                     render={({ field, fieldState }) => (
                         <Field label="Jenis Alokon" error={fieldState.error?.message}>
-                            <Input {...field} placeholder="UID / Implant / Suntik / PIL / Kondom / Mow/Mop" />
+                            <Select
+                            {...field}
+                            mode="tags"
+                            style={{ width: '100%' }}
+                            placeholder="Pilih Jenis Alokon"
+                            options={[
+                                { value: 'uid', label: 'UID' },
+                                { value: 'implant', label: 'Implant' },
+                                { value: 'suntik', label: 'Suntik' },
+                                { value: 'pil', label: 'PIL' },
+                                { value: 'kondom', label: 'Kondom' },
+                                { value: 'mowMop', label: 'Mow/Mop' },
+                            ]}
+                        />
+
                         </Field>
                     )}
                 />
