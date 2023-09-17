@@ -7,6 +7,9 @@ import { formatDate } from '@/utils/date';
 import { birthDateToAge, toPercentage } from '@/utils/formatter';
 import { UilEditAlt, UilEllipsisH, UilEye } from '@iconscout/react-unicons';
 import FormToddler from './FormToddler';
+import FormChecker from './FormChecker';
+import FormDiarrhea from './FormDiarrhea';
+import FormImmunization from './FormImmunization';
 
 interface DataType {
   _id: string
@@ -74,7 +77,8 @@ const columns: ColumnsType<DataType> = [
       >
         <UilEllipsisH size={20} />
       </Dropdown>
-    )
+    ),
+    width: 64
   },
 ];
 
@@ -119,9 +123,9 @@ const data: DataType[] = [
 
 const ToddlerContainer = () => {
   const { token: { colorTextSecondary } } = theme.useToken();
-  const [addBalita, setAddBalita] = useState(false);
-
-  const onSubmitForm = (values: Partial<DataType>) => {
+  const [formKey, setFormKey] = useState<'' | 'profile' | 'checker' | 'diarrhea' | 'immunization'>('');
+ 
+  const onSubmitForm = (values: any) => {
     console.log({ values });
   };
 
@@ -141,7 +145,7 @@ const ToddlerContainer = () => {
           </div>
         </Card>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
-          <Typography.Text style={{ color: colorTextSecondary }}>Gizi Buruk</Typography.Text>
+          <Typography.Text style={{ color: colorTextSecondary }}>Balita Dalam Pantauan</Typography.Text>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography.Title level={5}>5</Typography.Title>
             <Badge count={`${toPercentage(5 * 100 / 100)}%`} color="#697077" />
@@ -157,10 +161,10 @@ const ToddlerContainer = () => {
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddBalita(true)}>Balita</Button>
-          <Button type="primary" icon={<PlusOutlined />}>Hasil Pengecekan</Button>
-          <Button type="primary" icon={<PlusOutlined />}>Laporan Diare</Button>
-          <Button type="primary" icon={<PlusOutlined />}>Imunisasi</Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('profile')}>Balita</Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('checker')}>Hasil Pengecekan</Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('diarrhea')}>Laporan Diare</Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('immunization')}>Imunisasi</Button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Input.Search placeholder="Cari di sini..." />
@@ -176,11 +180,39 @@ const ToddlerContainer = () => {
       </Card>
       <Modal
         title="Tambah Balita"
-        open={addBalita}
+        open={formKey === 'profile'}
         footer={null}
-        onCancel={() => setAddBalita(false)}
+        onCancel={() => setFormKey('')}
+        destroyOnClose
       >
         <FormToddler onSubmit={onSubmitForm} />
+      </Modal>
+      <Modal
+        title="Hasil Pengecekan"
+        open={formKey === 'checker'}
+        footer={null}
+        onCancel={() => setFormKey('')}
+        destroyOnClose
+      >
+        <FormChecker onSubmit={onSubmitForm} />
+      </Modal>
+      <Modal
+        title="Laporan Diare"
+        open={formKey === 'diarrhea'}
+        footer={null}
+        onCancel={() => setFormKey('')}
+        destroyOnClose
+      >
+        <FormDiarrhea onSubmit={onSubmitForm} />
+      </Modal>
+      <Modal
+        title="Imunisasi Balita"
+        open={formKey === 'immunization'}
+        footer={null}
+        onCancel={() => setFormKey('')}
+        destroyOnClose
+      >
+        <FormImmunization onSubmit={onSubmitForm} />
       </Modal>
     </div>
   );

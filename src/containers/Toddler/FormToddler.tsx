@@ -19,18 +19,35 @@ interface IValues {
 }
 
 const schemaValidation = yup.object({
+  nik: yup.string().required('NIK harus diisi!'),
   name: yup.string().required('Nama harus diisi!'),
+  birthDate: yup.string().required('Tanggal lahir harus diisi!'),
+  motherName: yup.string().required('Nama ibu harus diisi!'),
+  fatherName: yup.string().required('Nama ayah harus diisi!'),
+  birthWeight: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Berat badan lahir harus diisi!'),
+  birthHeight: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Tinggi badan lahir harus diisi!'),
+  address: yup.string().required('Alamat harus diisi!'),
+  gender: yup.string().required('Jenis kelamin harus diisi!'),
 }).required();
 
 interface FormToddlerProps {
   onSubmit: (value: IValues) => void;
 }
 
-
 const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit }) => {
   const resolver = useYupValidationResolver(schemaValidation);
   const { control, handleSubmit } = useForm<IValues>({
-    defaultValues: {},
+    defaultValues: {
+      nik: '',
+      name: '',
+      birthDate: '',
+      motherName: '',
+      fatherName: '',
+      birthWeight: undefined,
+      birthHeight: undefined,
+      address: '',
+      gender: '',
+    },
     resolver
   });
 
@@ -70,7 +87,12 @@ const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit }) => {
             name="birthWeight"
             render={({ field, fieldState }) => (
               <Field label="Berat Badan Lahir" error={fieldState.error?.message}>
-                <Input {...field} suffix="Kg" placeholder="5" />
+                <Input 
+                  {...field} 
+                  onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
+                  suffix="Kg" 
+                  placeholder="5"
+                />
               </Field>
             )}
           />
@@ -79,7 +101,12 @@ const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit }) => {
             name="birthHeight"
             render={({ field, fieldState }) => (
               <Field label="Tinggi Badan Lahir" error={fieldState.error?.message}>
-                <Input {...field} suffix="cm" placeholder="45" />
+                <Input 
+                  {...field}
+                  onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
+                  suffix="cm"
+                  placeholder="45"
+                />
               </Field>
             )}
           />
