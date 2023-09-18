@@ -1,4 +1,8 @@
 {
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "extends": "next/core-web-vitals",
   "rules": {
     "react-hooks/rules-of-hooks": "off",
@@ -15,6 +19,11 @@
       "error",
       2
     ],
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
+    "@typescript-eslint/object-curly-spacing": "off",
     "no-multi-spaces": [
       "error"
     ]

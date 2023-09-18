@@ -1,10 +1,10 @@
 import React from 'react';
-import LoginContainer from "@/containers/Login";
+import LoginContainer from '@/containers/Login';
 
 const Login = () => {
-    return (
-        <LoginContainer />
-    );
+  return (
+    <LoginContainer />
+  );
 };
 
 export default Login;
