@@ -4,13 +4,13 @@ import { signOut, useSession } from 'next-auth/react';
 
 const Logout = () => {
   const router = useRouter();
-  const { data: user } = useSession({ required: true, onUnauthenticated: () => { router.replace('/login') } })
+  const { data: user } = useSession({ required: true, onUnauthenticated: () => { router.replace('/login'); } });
 
   React.useEffect(() => {
     if (user) {
-      signOut({ redirect: true, callbackUrl: '/login' })
+      signOut({ redirect: true, callbackUrl: '/login' });
     }
-  }, [user])
+  }, [user]);
 
   return (
     <React.Fragment />
