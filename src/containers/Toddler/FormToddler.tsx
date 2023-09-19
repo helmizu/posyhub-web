@@ -31,22 +31,23 @@ const schemaValidation = yup.object({
 }).required();
 
 interface FormToddlerProps {
+  defaultValues: IValues;
   onSubmit: (value: IValues) => void;
 }
 
-const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit }) => {
+const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit, defaultValues }) => {
   const resolver = useYupValidationResolver(schemaValidation);
-  const { control, handleSubmit } = useForm<IValues>({
+  const { control, handleSubmit, formState } = useForm<IValues>({
     defaultValues: {
-      nik: '',
-      name: '',
-      birthDate: '',
-      motherName: '',
-      fatherName: '',
-      birthWeight: undefined,
-      birthHeight: undefined,
-      address: '',
-      gender: '',
+      nik: defaultValues?.nik,
+      name: defaultValues?.name,
+      birthDate: defaultValues?.birthDate,
+      motherName: defaultValues?.motherName,
+      fatherName: defaultValues?.fatherName,
+      birthWeight: defaultValues?.birthWeight,
+      birthHeight: defaultValues?.birthHeight,
+      address: defaultValues?.address,
+      gender: defaultValues?.gender,
     },
     resolver
   });
@@ -59,7 +60,12 @@ const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit }) => {
           name="nik"
           render={({ field, fieldState }) => (
             <Field label="NIK" error={fieldState.error?.message}>
-              <Input {...field} placeholder="357XXXXXXXXXXXXX" />
+              <Input
+                {...field}
+                onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
+                placeholder="357XXXXXXXXXXXXX"
+                maxLength={16}
+              />
             </Field>
           )}
         />
@@ -87,10 +93,10 @@ const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit }) => {
             name="birthWeight"
             render={({ field, fieldState }) => (
               <Field label="Berat Badan Lahir" error={fieldState.error?.message}>
-                <Input 
-                  {...field} 
+                <Input
+                  {...field}
                   onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
-                  suffix="Kg" 
+                  suffix="Kg"
                   placeholder="5"
                 />
               </Field>
@@ -101,7 +107,7 @@ const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit }) => {
             name="birthHeight"
             render={({ field, fieldState }) => (
               <Field label="Tinggi Badan Lahir" error={fieldState.error?.message}>
-                <Input 
+                <Input
                   {...field}
                   onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
                   suffix="cm"
@@ -144,14 +150,14 @@ const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit }) => {
           render={({ field, fieldState }) => (
             <Field label="Jenis Kelamin" error={fieldState.error?.message}>
               <Radio.Group {...field}>
-                <Radio value="female">Perempuan</Radio>
-                <Radio value="male">Laki - laki</Radio>
+                <Radio value="Perempuan">Perempuan</Radio>
+                <Radio value="Laki - laki">Laki - laki</Radio>
               </Radio.Group>
             </Field>
           )}
         />
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <Button type="primary" htmlType="submit">Simpan</Button>
+          <Button type="primary" htmlType="submit" loading={formState.isSubmitting}>Simpan</Button>
         </div>
       </div>
     </form>

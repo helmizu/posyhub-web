@@ -32,19 +32,13 @@ export const callApi = async (config: AxiosRequestConfig, withCancel?: boolean) 
   }
 };
 
-export const swrFetcher = async (url: string, options?: AxiosRequestConfig, onSuccess?: (data: any, res: AxiosResponse) => void, onError?: (err: any) => void) => {
-  if (!url) return;
-  return await axios
-    .get(url, options)
-    .then((res) =>{
-      const { data } = res;
-      onSuccess?.(data?.data, res);
-      return data?.data;
-    })
-    .catch((err: any) => {
-      onError?.(err);
-      throw err;
-    });
+export const swrCallApi = async (url: string, options: AxiosRequestConfig) => {
+  try {
+    const { data } = await axios.get(url, options);
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
 export default callApi;

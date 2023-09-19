@@ -5,9 +5,7 @@ import type { DocumentContext } from 'next/document';
 
 const MyDocument = () => (
   <Html lang="en">
-    <Head>
-      <title>Posyhub</title>
-    </Head>
+    <Head />
     <body>
       <Main />
       <NextScript />

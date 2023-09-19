@@ -3,8 +3,9 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import callApi from '@/utils/network';
 import { ILoginParams } from '@/types/auth';
 import { AxiosRequestConfig } from 'axios';
+import { AuthOptions } from 'next-auth';
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
@@ -73,4 +74,6 @@ export default NextAuth({
   },
   // Enable debug messages in the console if you are having problems
   debug: process.env.NODE_ENV === 'development',
-});
+};
+
+export default NextAuth(authOptions);

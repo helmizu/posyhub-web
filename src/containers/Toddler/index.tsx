@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Badge, Button, Card, Dropdown, Input, Modal, Table, Typography, theme } from 'antd';
+import { Badge, Button, Card, Dropdown, Input, Modal, Table, Typography, message, theme } from 'antd';
 import { PlusOutlined, PrinterOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import Column from '@/components/Column';
@@ -10,6 +10,9 @@ import FormToddler from './FormToddler';
 import FormChecker from './FormChecker';
 import FormDiarrhea from './FormDiarrhea';
 import FormImmunization from './FormImmunization';
+import useSWR from 'swr';
+import callApi, { swrCallApi } from '@/utils/network';
+import { AxiosRequestConfig } from 'axios';
 
 interface DataType {
   _id: string
@@ -24,109 +27,95 @@ interface DataType {
   gender: string
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    render: (text, record) => <Column text={text} subtext={record.nik} />,
-  },
-  {
-    title: 'Tanggal Lahir',
-    dataIndex: 'birthDate',
-    render: (value) => formatDate(value, 'DD/MM/YYYY')
-  },
-  {
-    title: 'Umur',
-    dataIndex: 'birthDate',
-    render: (value) => birthDateToAge(value)
-  },
-  {
-    title: 'BB (Kg) / TB (cm)',
-    dataIndex: 'birthWeight',
-    render: (value, record) => `${value} Kg / ${record.birthHeight} cm`
-  },
-  {
-    title: 'Nama Ayah',
-    dataIndex: 'fatherName',
-  },
-  {
-    title: 'Nama Ibu',
-    dataIndex: 'motherName',
-  },
-  {
-    title: '',
-    dataIndex: 'action',
-    render: (_, record) => (
-      <Dropdown
-        menu={{
-          items: [
-            {
-              key: 'detail',
-              label: 'Lihat Detail',
-              icon: <UilEye size={16} />,
-              onClick: () => console.log('view detail', record.nik)
-            },
-            {
-              key: 'edit',
-              label: 'Ubah',
-              icon: <UilEditAlt size={16} />,
-              onClick: () => console.log('edit', record.nik)
-            },
-          ]
-        }}
-      >
-        <UilEllipsisH size={20} />
-      </Dropdown>
-    ),
-    width: 64
-  },
-];
-
-const data: DataType[] = [
-  {
-    _id: '64fd642158bb96ffcb03069d',
-    nik: '1234567890',
-    name: 'John Doe',
-    birthDate: '2000-01-01T00:00:00.000Z',
-    motherName: 'Jane Doe',
-    fatherName: 'John Doe Sr.',
-    birthWeight: 3.5,
-    birthHeight: 50,
-    address: '123 Main Street',
-    gender: 'Laki - laki'
-  },
-  {
-    _id: '64fd642158bb96ffcb03069d',
-    nik: '1234567890',
-    name: 'John Doe',
-    birthDate: '2000-01-01T00:00:00.000Z',
-    motherName: 'Jane Doe',
-    fatherName: 'John Doe Sr.',
-    birthWeight: 3.5,
-    birthHeight: 50,
-    address: '123 Main Street',
-    gender: 'Laki - laki'
-  },
-  {
-    _id: '64fd642158bb96ffcb03069d',
-    nik: '1234567890',
-    name: 'John Doe',
-    birthDate: '2000-01-01T00:00:00.000Z',
-    motherName: 'Jane Doe',
-    fatherName: 'John Doe Sr.',
-    birthWeight: 3.5,
-    birthHeight: 50,
-    address: '123 Main Street',
-    gender: 'Laki - laki'
-  },
-];
-
 const ToddlerContainer = () => {
   const { token: { colorTextSecondary } } = theme.useToken();
   const [formKey, setFormKey] = useState<'' | 'profile' | 'checker' | 'diarrhea' | 'immunization'>('');
- 
-  const onSubmitForm = (values: any) => {
-    console.log({ values });
+  const [nikFocus, setNikFocus] = useState('');
+  const { data, mutate, isLoading } = useSWR('/api/toddler/list', swrCallApi);
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      render: (text, record) => <Column text={text} subtext={record.nik} />,
+    },
+    {
+      title: 'Tanggal Lahir',
+      dataIndex: 'birthDate',
+      render: (value) => formatDate(value, 'DD/MM/YYYY')
+    },
+    {
+      title: 'Umur',
+      dataIndex: 'birthDate',
+      render: (value) => birthDateToAge(value)
+    },
+    {
+      title: 'BB (Kg) / TB (cm)',
+      dataIndex: 'birthWeight',
+      render: (value, record) => `${value} Kg / ${record.birthHeight} cm`
+    },
+    {
+      title: 'Nama Ayah',
+      dataIndex: 'fatherName',
+    },
+    {
+      title: 'Nama Ibu',
+      dataIndex: 'motherName',
+    },
+    {
+      title: '',
+      dataIndex: 'action',
+      render: (_, record) => (
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: 'detail',
+                label: 'Lihat Detail',
+                icon: <UilEye size={16} />,
+                onClick: () => console.log('view detail', record.nik)
+              },
+              {
+                key: 'edit',
+                label: 'Ubah',
+                icon: <UilEditAlt size={16} />,
+                onClick: () => {
+                  setFormKey('profile');
+                  setNikFocus(record.nik);
+                }
+              },
+            ]
+          }}
+        >
+          <UilEllipsisH size={20} />
+        </Dropdown>
+      ),
+      width: 64
+    },
+  ];
+
+  const onCloseModal = () => {
+    setFormKey('');
+    setNikFocus('');
+  };
+
+  const onSubmitFormToddler = async (values: any) => {
+    try {
+      const method = !nikFocus ? 'POST' : 'PUT';
+      const url = !nikFocus ? '/api/toddler/add' : `/api/toddler/edit/${nikFocus}`;
+      const options: AxiosRequestConfig = {
+        method,
+        url: url,
+        data: values,
+      };
+      const addToddler = await callApi(options);
+      if (addToddler) {
+        onCloseModal();
+        mutate();
+      }
+    } catch (error) {
+      message.error(!nikFocus ? 'Tambah data balita gagal!' : 'Ubah data balita gagal!');
+    }
   };
 
   return (
@@ -176,43 +165,47 @@ const ToddlerContainer = () => {
           rowKey={(record) => record.nik}
           columns={columns}
           dataSource={data}
+          loading={isLoading}
         />
       </Card>
       <Modal
         title="Tambah Balita"
         open={formKey === 'profile'}
         footer={null}
-        onCancel={() => setFormKey('')}
+        onCancel={onCloseModal}
         destroyOnClose
       >
-        <FormToddler onSubmit={onSubmitForm} />
+        <FormToddler 
+          onSubmit={onSubmitFormToddler}
+          defaultValues={data?.find((user: any) => user.nik === nikFocus)}
+        />
       </Modal>
       <Modal
         title="Hasil Pengecekan"
         open={formKey === 'checker'}
         footer={null}
-        onCancel={() => setFormKey('')}
+        onCancel={onCloseModal}
         destroyOnClose
       >
-        <FormChecker onSubmit={onSubmitForm} />
+        <FormChecker onSubmit={console.log} />
       </Modal>
       <Modal
         title="Laporan Diare"
         open={formKey === 'diarrhea'}
         footer={null}
-        onCancel={() => setFormKey('')}
+        onCancel={onCloseModal}
         destroyOnClose
       >
-        <FormDiarrhea onSubmit={onSubmitForm} />
+        <FormDiarrhea onSubmit={console.log} />
       </Modal>
       <Modal
         title="Imunisasi Balita"
         open={formKey === 'immunization'}
         footer={null}
-        onCancel={() => setFormKey('')}
+        onCancel={onCloseModal}
         destroyOnClose
       >
-        <FormImmunization onSubmit={onSubmitForm} />
+        <FormImmunization onSubmit={console.log} />
       </Modal>
     </div>
   );
