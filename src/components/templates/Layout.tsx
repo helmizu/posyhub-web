@@ -2,16 +2,11 @@ import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
-import { Layout as AntLayout, Menu, theme, Avatar, Typography, Dropdown, Button } from 'antd';
+import { Layout as AntLayout, Menu, theme, Avatar, Typography, Dropdown, Button, message } from 'antd';
 import { filterMenuByRole, findKeysForPath } from '@/utils/layout';
 import { SIDEBAR } from '@/constants/layout';
 import { UilAngleDown, UilSignout } from '@iconscout/react-unicons';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 const { Header, Sider, Content } = AntLayout;
 
@@ -57,7 +52,7 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
   return (
     <>
       <Head>
-        <title>Posyhub | {title}</title>
+        <title>Posyhub | {title || ''}</title>
       </Head>
       <AntLayout>
         <Sider style={{ backgroundColor: colorWhite, height: '100vh' }}>

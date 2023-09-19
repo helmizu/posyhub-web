@@ -60,7 +60,6 @@ export default NextAuth({
       return null;
     },
     async session({ session, token, user }: any) {
-      console.log({ token, user });
       session.user.accessToken = token?.token;
       return session;
     },
