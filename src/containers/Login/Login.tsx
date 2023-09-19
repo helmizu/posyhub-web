@@ -23,7 +23,7 @@ const schemaValidation = yup.object({
 const LoginContainer = () => {
   const router = useRouter();
   const resolver = useYupValidationResolver(schemaValidation);
-  const { control, handleSubmit } = useForm<IValues>({
+  const { control, handleSubmit, formState } = useForm<IValues>({
     defaultValues: {
       username: undefined,
       password: undefined
@@ -83,7 +83,7 @@ const LoginContainer = () => {
               )}
             />
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%' }}>
-              <Button style={{ width: '100%' }} type="primary" htmlType="submit">Masuk</Button>
+              <Button style={{ width: '100%' }} type="primary" htmlType="submit" loading={formState.isSubmitting}>Masuk</Button>
             </div>
           </div>
         </form>
