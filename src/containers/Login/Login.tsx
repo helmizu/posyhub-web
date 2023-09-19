@@ -1,12 +1,14 @@
 import React from 'react';
-import { Input, Button, Card } from 'antd';
+import { Input, Button, Card, message } from 'antd';
 import { Typography } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import Field from '@/components/Field';
 import { useYupValidationResolver } from '@/utils/yupResolver';
 import * as yup from 'yup';
+import { SignInOptions, signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 interface IValues {
   username: string;
@@ -19,6 +21,7 @@ const schemaValidation = yup.object({
 }).required();
 
 const LoginContainer = () => {
+  const router = useRouter();
   const resolver = useYupValidationResolver(schemaValidation);
   const { control, handleSubmit } = useForm<IValues>({
     defaultValues: {
@@ -28,12 +31,15 @@ const LoginContainer = () => {
     resolver
   });
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
-    if (values.remember) {
-      localStorage.setItem('username', values.username);
-      localStorage.setItem('password', values.password);
-    }
+  const onSubmit = async (values: any) => {
+    const res: any = await signIn('credentials', {
+      redirect: false,
+      username: values.username,
+      password: values.password,
+      callbackUrl: `${window.location.origin}/dashboard`,
+    });
+    if (res?.error) return message.error(res.error);
+    if (res?.url) return router.push('/dashboard');
   };
 
   return (
@@ -47,10 +53,10 @@ const LoginContainer = () => {
     >
       <Card style={{ width: 500 }}>
         <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-          <Title level={2}>Selamat Datang! </Title>
-          <span>Silahkan masukkan username dan password anda!</span>
+          <Title level={3}>Selamat Datang!</Title>
+          <Text>Silahkan masukkan username dan password Anda!</Text>
         </div>
-        <form style={{ marginTop: '20px' }} onSubmit={handleSubmit(onFinish)}>
+        <form style={{ marginTop: '20px' }} onSubmit={handleSubmit(onSubmit)}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: '12px' }}>
             <Controller
               control={control}
@@ -69,7 +75,7 @@ const LoginContainer = () => {
               name="password"
               render={({ field, fieldState }) => (
                 <Field label="Password" error={fieldState.error?.message}>
-                  <Input
+                  <Input.Password
                     {...field}
                     placeholder="Masukkan password"
                   />

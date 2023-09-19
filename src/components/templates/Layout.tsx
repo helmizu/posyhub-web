@@ -11,6 +11,7 @@ import { Layout as AntLayout, Menu, theme, Avatar, Typography, Dropdown, Button 
 import { filterMenuByRole, findKeysForPath } from '@/utils/layout';
 import { SIDEBAR } from '@/constants/layout';
 import { UilAngleDown, UilSignout } from '@iconscout/react-unicons';
+import { useSession } from 'next-auth/react';
 
 const { Header, Sider, Content } = AntLayout;
 
@@ -51,6 +52,8 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
   const [parentKey, childKey] = findKeysForPath(mappedSidebar, activePath) ?? [];
   const activeKey = childKey || parentKey;
 
+  const { data: user } = useSession({ required: true, onUnauthenticated: () => { router.push('/login'); } });
+
   return (
     <>
       <Head>
@@ -71,16 +74,18 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
         </Sider>
         <AntLayout>
           <Header style={{ background: colorWhite, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingInline: 24, height: 64 }}>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center', }}>
-              <Avatar size="large" style={{ backgroundColor: colorPrimary }}>N</Avatar>
-              <div style={{ display: 'flex', flexDirection: 'column', minWidth: 80 }}>
-                <Typography.Text strong>Name</Typography.Text>
-                <Typography.Text style={{ color: colorTextSecondary, fontSize: 14 }}>Username</Typography.Text>
+            {!!user && (
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center', }}>
+                <Avatar size="large" style={{ backgroundColor: colorPrimary }}>N</Avatar>
+                <div style={{ display: 'flex', flexDirection: 'column', minWidth: 80 }}>
+                  <Typography.Text strong>Name</Typography.Text>
+                  <Typography.Text style={{ color: colorTextSecondary, fontSize: 14 }}>Username</Typography.Text>
+                </div>
+                <Dropdown trigger={['click']} menu={{ items: MENU_ITEMS }}>
+                  <Button type="text" icon={<UilAngleDown />} style={{ borderRadius: '50%' }} />
+                </Dropdown>
               </div>
-              <Dropdown trigger={['click']} menu={{ items: MENU_ITEMS }}>
-                <Button type="text" icon={<UilAngleDown />} style={{ borderRadius: '50%' }} />
-              </Dropdown>
-            </div>
+            )}
           </Header>
           <Content
             style={{
