@@ -11,19 +11,19 @@ interface IValues {
   name: string
   birthDate: string
   address: string
-  phone: string
-  status: string
-  pregnantCount: number
-  childBirhDate: string
-  hpht: string
-  phl: string
-  birthWeight: number
-  birthHeight: number
-  tension: string
-  lila: number
+  phoneNumber: string
+  economyStatus: string
+  pregnancyNumber: number
+  youngestChildAge: number
+  lastPeriod: string
+  estimatedBirth: string
+  weight: number
+  height: number
+  bloodPressure: number
+  upperArmCircumference: number
   bloodType: string
-  pudjiRochyatiScore: string
-  tetanusVaccine: boolean
+  score: number
+  immunizationStatus: boolean
 }
 
 const schemaValidation = yup.object({
@@ -32,12 +32,32 @@ const schemaValidation = yup.object({
 
 interface FormPregnantProps {
   onSubmit: (value: IValues) => void;
+  defaultValues: IValues;
 }
 
-const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
+const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit, defaultValues }) => {
   const resolver = useYupValidationResolver(schemaValidation);
-  const { control, handleSubmit } = useForm<IValues>({
-    defaultValues: {},
+
+  const { control, handleSubmit, formState } = useForm<IValues>({
+    defaultValues: {
+      nik: defaultValues?.nik,
+      name: defaultValues?.name,
+      birthDate: defaultValues?.birthDate,
+      address: defaultValues?.address,
+      phoneNumber: defaultValues?.phoneNumber,
+      economyStatus: defaultValues?.economyStatus,
+      pregnancyNumber: defaultValues?.pregnancyNumber,
+      youngestChildAge: defaultValues?.youngestChildAge,
+      lastPeriod: defaultValues?.lastPeriod,
+      estimatedBirth: defaultValues?.estimatedBirth,
+      weight: defaultValues?.weight,
+      height: defaultValues?.height,
+      bloodPressure: defaultValues?.bloodPressure,
+      upperArmCircumference: defaultValues?.upperArmCircumference,
+      bloodType: defaultValues?.bloodType,
+      score: defaultValues?.score,
+      immunizationStatus: defaultValues?.immunizationStatus,
+    },
     resolver
   });
 
@@ -84,7 +104,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="phone"
+              name="phoneNumber"
               render={({ field, fieldState }) => (
                 <Field label="No HP / WA" error={fieldState.error?.message}>
                   <Input {...field} placeholder="+62XXXXXXXX" />
@@ -95,7 +115,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="status"
+              name="economyStatus"
               render={({ field, fieldState }) => (
                 <Field label="Status Ekonomi" error={fieldState.error?.message}>
                   <Select
@@ -117,7 +137,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="pregnantCount"
+              name="pregnancyNumber"
               render={({ field, fieldState }) => (
                 <Field label="Hamil Ke" error={fieldState.error?.message}>
                   <Input {...field} placeholder="2" />
@@ -128,7 +148,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="childBirhDate"
+              name="youngestChildAge"
               render={({ field, fieldState }) => (
                 <Field label="Usia Anak Terkecil" error={fieldState.error?.message}>
                   <Input {...field} placeholder="12" />
@@ -141,7 +161,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="hpht"
+              name="lastPeriod"
               render={({ field, fieldState }) => (
                 <Field label="Haid Terakhir (HPHT)" error={fieldState.error?.message}>
                   <DatePickerBase {...field} />
@@ -152,7 +172,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="phl"
+              name="estimatedBirth"
               render={({ field, fieldState }) => (
                 <Field label="Perkiraan Persalinan (PHL)" error={fieldState.error?.message}>
                   <DatePickerBase {...field} />
@@ -165,7 +185,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="birthWeight"
+              name="weight"
               render={({ field, fieldState }) => (
                 <Field label="Berat Badan" error={fieldState.error?.message}>
                   <Input {...field} suffix="Kg" placeholder="5" />
@@ -176,7 +196,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="birthHeight"
+              name="height"
               render={({ field, fieldState }) => (
                 <Field label="Tinggi Badan" error={fieldState.error?.message}>
                   <Input {...field} suffix="cm" placeholder="45" />
@@ -189,7 +209,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="tension"
+              name="bloodPressure"
               render={({ field, fieldState }) => (
                 <Field label="Tensi" error={fieldState.error?.message}>
                   <Input {...field} placeholder="90/60" />
@@ -200,7 +220,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="lila"
+              name="upperArmCircumference"
               render={({ field, fieldState }) => (
                 <Field label="Lingkat Lengan Atas (LILA)" error={fieldState.error?.message}>
                   <Input {...field} suffix="cm" placeholder="50" />
@@ -235,7 +255,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           <div style={{width: '50%'}}>
             <Controller
               control={control}
-              name="pudjiRochyatiScore"
+              name="score"
               render={({ field, fieldState }) => (
                 <Field label="Skor Pudji Rochyati" error={fieldState.error?.message}>
                   <Input {...field} placeholder="90" />
@@ -248,7 +268,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
 
         <Controller
           control={control}
-          name="tetanusVaccine"
+          name="immunizationStatus"
           render={({ field, fieldState }) => (
             <Field label="Status Imunisasi Tetanus" error={fieldState.error?.message}>
               <Checkbox {...field} >
@@ -258,7 +278,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit }) => {
           )}
         />
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <Button type="primary" htmlType="submit">Simpan</Button>
+          <Button type="primary" htmlType="submit" loading={formState.isSubmitting}>Simpan</Button>
         </div>
       </div>
     </form>
