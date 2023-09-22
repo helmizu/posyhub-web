@@ -88,34 +88,38 @@ const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit, defaultValues }) =>
           )}
         />
         <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-          <Controller
-            control={control}
-            name="birthWeight"
-            render={({ field, fieldState }) => (
-              <Field label="Berat Badan Lahir" error={fieldState.error?.message}>
-                <Input
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
-                  suffix="Kg"
-                  placeholder="5"
-                />
-              </Field>
-            )}
-          />
-          <Controller
-            control={control}
-            name="birthHeight"
-            render={({ field, fieldState }) => (
-              <Field label="Tinggi Badan Lahir" error={fieldState.error?.message}>
-                <Input
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
-                  suffix="cm"
-                  placeholder="45"
-                />
-              </Field>
-            )}
-          />
+          <div style={{ flex: 1 }}>
+            <Controller
+              control={control}
+              name="birthWeight"
+              render={({ field, fieldState }) => (
+                <Field label="Berat Badan Lahir" error={fieldState.error?.message}>
+                  <Input
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
+                    suffix="Kg"
+                    placeholder="5"
+                  />
+                </Field>
+              )}
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <Controller
+              control={control}
+              name="birthHeight"
+              render={({ field, fieldState }) => (
+                <Field label="Tinggi Badan Lahir" error={fieldState.error?.message}>
+                  <Input
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
+                    suffix="cm"
+                    placeholder="45"
+                  />
+                </Field>
+              )}
+            />
+          </div>
         </div>
         <Controller
           control={control}

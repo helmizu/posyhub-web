@@ -75,64 +75,72 @@ const FormChecker: React.FC<FormCheckerProps> = ({ onSubmit }) => {
           )}
         />
         <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-          <Controller
-            control={control}
-            name="weight"
-            render={({ field, fieldState }) => (
-              <Field label="Berat Badan" error={fieldState.error?.message}>
-                <Input
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
-                  suffix="Kg"
-                  placeholder="5"
-                />
-              </Field>
-            )}
-          />
-          <Controller
-            control={control}
-            name="height"
-            render={({ field, fieldState }) => (
-              <Field label="Tinggi Badan" error={fieldState.error?.message}>
-                <Input
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
-                  suffix="cm"
-                  placeholder="45"
-                />
-              </Field>
-            )}
-          />
+          <div style={{ flex: 1 }}> 
+            <Controller
+              control={control}
+              name="weight"
+              render={({ field, fieldState }) => (
+                <Field label="Berat Badan" error={fieldState.error?.message}>
+                  <Input
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
+                    suffix="Kg"
+                    placeholder="5"
+                  />
+                </Field>
+              )}
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <Controller
+              control={control}
+              name="height"
+              render={({ field, fieldState }) => (
+                <Field label="Tinggi Badan" error={fieldState.error?.message}>
+                  <Input
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
+                    suffix="cm"
+                    placeholder="45"
+                  />
+                </Field>
+              )}
+            />
+          </div>
         </div>
         <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-          <Controller
-            control={control}
-            name="headCircumference"
-            render={({ field, fieldState }) => (
-              <Field label="Lingkar Kepala (LK)" error={fieldState.error?.message}>
-                <Input
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
-                  suffix="cm"
-                  placeholder="14"
-                />
-              </Field>
-            )}
-          />
-          <Controller
-            control={control}
-            name="upperArmCircumference"
-            render={({ field, fieldState }) => (
-              <Field label="Lingkar Lengan Atas (LILA)" error={fieldState.error?.message}>
-                <Input
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
-                  suffix="cm"
-                  placeholder="6"
-                />
-              </Field>
-            )}
-          />
+          <div style={{ flex: 1 }}>
+            <Controller
+              control={control}
+              name="headCircumference"
+              render={({ field, fieldState }) => (
+                <Field label="Lingkar Kepala (LK)" error={fieldState.error?.message}>
+                  <Input
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
+                    suffix="cm"
+                    placeholder="14"
+                  />
+                </Field>
+              )}
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <Controller
+              control={control}
+              name="upperArmCircumference"
+              render={({ field, fieldState }) => (
+                <Field label="Lingkar Lengan Atas (LILA)" error={fieldState.error?.message}>
+                  <Input
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
+                    suffix="cm"
+                    placeholder="6"
+                  />
+                </Field>
+              )}
+            />
+          </div>
         </div>
         <Controller
           control={control}

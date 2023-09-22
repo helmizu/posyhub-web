@@ -53,25 +53,29 @@ const FormImmunization: React.FC<FormImmunizationProps> = ({ onSubmit }) => {
             </Field>
           )}
         />
-        <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
-          <Controller
-            control={control}
-            name="immunizationDate"
-            render={({ field, fieldState }) => (
-              <Field label="Tanggal Imunisasi" error={fieldState.error?.message}>
-                <DatePickerBase {...field} />
-              </Field>
-            )}
-          />
-          <Controller
-            control={control}
-            name="type"
-            render={({ field, fieldState }) => (
-              <Field label="Jenis Imunisasi" error={fieldState.error?.message}>
-                <Select options={[{ label: 'Jenis imunisasi', value: 'value imunisiasi' }]} {...field} placeholder="Pilih jenis imunisasi" />
-              </Field>
-            )}
-          />
+        <div style={{ display: 'flex', flexDirection: 'row', gap: 16, flexGrow: 1 }}>
+          <div style={{ display: 'flex', gap: 16, flex: 1 }}>
+            <Controller
+              control={control}
+              name="immunizationDate"
+              render={({ field, fieldState }) => (
+                <Field label="Tanggal Imunisasi" error={fieldState.error?.message}>
+                  <DatePickerBase {...field} />
+                </Field>
+              )}
+            />
+            <div style={{ display: 'flex', gap: 16, flex: 1 }}>
+            </div>
+            <Controller
+              control={control}
+              name="type"
+              render={({ field, fieldState }) => (
+                <Field label="Jenis Imunisasi" error={fieldState.error?.message}>
+                  <Select options={[{ label: 'Jenis imunisasi', value: 'value imunisiasi' }]} {...field} placeholder="Pilih jenis imunisasi" />
+                </Field>
+              )}
+            />
+          </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <Button type="primary" htmlType="submit">Simpan</Button>
