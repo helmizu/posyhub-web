@@ -58,7 +58,7 @@ const FormImmunization: React.FC<FormImmunizationProps> = ({ onSubmit }) => {
             control={control}
             name="immunizationDate"
             render={({ field, fieldState }) => (
-              <Field label="Tanggal Pengecekan" error={fieldState.error?.message}>
+              <Field label="Tanggal Imunisasi" error={fieldState.error?.message}>
                 <DatePickerBase {...field} />
               </Field>
             )}
