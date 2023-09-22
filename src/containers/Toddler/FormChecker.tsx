@@ -109,7 +109,7 @@ const FormChecker: React.FC<FormCheckerProps> = ({ onSubmit }) => {
             control={control}
             name="headCircumference"
             render={({ field, fieldState }) => (
-              <Field label="Lingkar Kepala (headCircumference)" error={fieldState.error?.message}>
+              <Field label="Lingkar Kepala (LK)" error={fieldState.error?.message}>
                 <Input
                   {...field}
                   onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
@@ -123,7 +123,7 @@ const FormChecker: React.FC<FormCheckerProps> = ({ onSubmit }) => {
             control={control}
             name="upperArmCircumference"
             render={({ field, fieldState }) => (
-              <Field label="Lingkar Lengan Atas (upperArmCircumference)" error={fieldState.error?.message}>
+              <Field label="Lingkar Lengan Atas (LILA)" error={fieldState.error?.message}>
                 <Input
                   {...field}
                   onChange={(e) => field.onChange(e.target.value?.replace(/\D+/g, ''))}
