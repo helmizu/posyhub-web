@@ -1,27 +1,30 @@
 import DatePickerBase from '@/components/DatePickerBase';
 import Field from '@/components/Field';
+import { birthDateToAge } from '@/utils/formatter';
+import { swrCallApi } from '@/utils/network';
 import { useYupValidationResolver } from '@/utils/yupResolver';
-import { Button, Checkbox, Input, Radio, Select } from 'antd';
+import { Button, Input, Radio, Select } from 'antd';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import useSWR from 'swr';
 import * as yup from 'yup';
 
 interface IValues {
   nik: string
-  date: string
-  location: string
-  medicine: string
-  amount: number
-  age: string
+  checkDate: string
+  checkLocation: string
+  medType: string
+  medAmount: number
+  ageCategory: string
 }
 
 const schemaValidation = yup.object({
   nik: yup.string().required('Nama harus diisi!'),
-  date: yup.string().required('Tanggal harus diisi!'),
-  location: yup.string().required('Tempat pelayanan kesehatan harus diisi!'),
-  medicine: yup.string().required('Obat harus diisi!'),
-  amount: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Jumlah pemberian harus diisi!'),
-  age: yup.string().required('Umur harus diisi!'),
+  checkDate: yup.string().required('Tanggal harus diisi!'),
+  checkLocation: yup.string().required('Tempat pelayanan kesehatan harus diisi!'),
+  medType: yup.string().required('Obat harus diisi!'),
+  medAmount: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Jumlah pemberian harus diisi!'),
+  ageCategory: yup.string().required('Umur harus diisi!'),
 }).required();
 
 interface FormDiarrheaProps {
@@ -29,19 +32,20 @@ interface FormDiarrheaProps {
 }
 
 const FormDiarrhea: React.FC<FormDiarrheaProps> = ({ onSubmit }) => {
+  const { data = [], isLoading } = useSWR('/api/toddler/list', (url) => swrCallApi(url, { params: { page: 1, size: 99999 } }));
   const resolver = useYupValidationResolver(schemaValidation);
-  const { control, handleSubmit, watch } = useForm<IValues>({
+  const { control, handleSubmit, watch, setValue } = useForm<IValues>({
     defaultValues: {
       nik: undefined,
-      date: new Date().toISOString(),
-      location: undefined,
-      medicine: '',
-      amount: undefined,
-      age: '',
+      checkDate: new Date().toISOString(),
+      checkLocation: undefined,
+      medType: '',
+      medAmount: undefined,
+      ageCategory: '',
     },
     resolver
   });
-  const medicine = watch('medicine');
+  const medType = watch('medType');
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -51,13 +55,22 @@ const FormDiarrhea: React.FC<FormDiarrheaProps> = ({ onSubmit }) => {
           name="nik"
           render={({ field, fieldState }) => (
             <Field label="Nama" error={fieldState.error?.message}>
-              <Select options={[{ label: 'name', value: 'nik' }]} {...field} placeholder="Pilih nama balita" />
+              <Select
+                {...field}
+                options={data.map((item: any) => ({ label: item.name, value: item.nik, birthDate: item.birthDate }))}
+                placeholder="Pilih nama balita"
+                loading={isLoading}
+                onSelect={(_value, option) => {
+                  const age = birthDateToAge(option.birthDate, 'month');
+                  setValue('ageCategory', +age <= 60 ? '<5' : '>5');
+                }}
+              />
             </Field>
           )}
         />
         <Controller
           control={control}
-          name="date"
+          name="checkDate"
           render={({ field, fieldState }) => (
             <Field label="Tanggal Pengecekan" error={fieldState.error?.message}>
               <DatePickerBase {...field} />
@@ -66,7 +79,7 @@ const FormDiarrhea: React.FC<FormDiarrheaProps> = ({ onSubmit }) => {
         />
         <Controller
           control={control}
-          name="location"
+          name="checkLocation"
           render={({ field, fieldState }) => (
             <Field label="" error={fieldState.error?.message}>
               <>
@@ -84,7 +97,7 @@ const FormDiarrhea: React.FC<FormDiarrheaProps> = ({ onSubmit }) => {
         />
         <Controller
           control={control}
-          name="medicine"
+          name="medType"
           render={({ field, fieldState }) => (
             <Field label="Obat" error={fieldState.error?.message}>
               <Radio.Group {...field}>
@@ -94,10 +107,10 @@ const FormDiarrhea: React.FC<FormDiarrheaProps> = ({ onSubmit }) => {
             </Field>
           )}
         />
-        {!!medicine && (
+        {!!medType && (
           <Controller
             control={control}
-            name="amount"
+            name="medAmount"
             render={({ field, fieldState }) => (
               <Field label="" error={fieldState.error?.message}>
                 <Input
@@ -111,12 +124,12 @@ const FormDiarrhea: React.FC<FormDiarrheaProps> = ({ onSubmit }) => {
         )}
         <Controller
           control={control}
-          name="age"
+          name="ageCategory"
           render={({ field, fieldState }) => (
             <Field label="Umur" error={fieldState.error?.message}>
               <Radio.Group {...field}>
-                <Radio value="< 5 tahun">{'< 5 tahun'}</Radio>
-                <Radio value="> 5 tahun">{'> 5 tahun'}</Radio>
+                <Radio value="<5">{'< 5 tahun'}</Radio>
+                <Radio value=">5">{'> 5 tahun'}</Radio>
               </Radio.Group>
             </Field>
           )}

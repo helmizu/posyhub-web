@@ -1,25 +1,23 @@
 import DatePickerBase from '@/components/DatePickerBase';
 import Field from '@/components/Field';
+import { swrCallApi } from '@/utils/network';
 import { useYupValidationResolver } from '@/utils/yupResolver';
 import { Button, Checkbox, Input, Radio, Select } from 'antd';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import useSWR from 'swr';
 import * as yup from 'yup';
 
 interface IValues {
   nik: string
-  date: string
-  immunization: string
-  height: number
-  lk: number
-  lila: number
-  pmt: boolean
+  immunizationDate: string
+  type: string
 }
 
 const schemaValidation = yup.object({
   nik: yup.string().required('Nama harus diisi!'),
-  date: yup.string().required('Tanggal harus diisi!'),
-  immunization: yup.string().required('Jenis imunisasi harus diisi!'),
+  immunizationDate: yup.string().required('Tanggal harus diisi!'),
+  type: yup.string().required('Jenis imunisasi harus diisi!'),
 }).required();
 
 interface FormImmunizationProps {
@@ -27,12 +25,13 @@ interface FormImmunizationProps {
 }
 
 const FormImmunization: React.FC<FormImmunizationProps> = ({ onSubmit }) => {
+  const { data = [], isLoading } = useSWR('/api/toddler/list', (url) => swrCallApi(url, { params: { page: 1, size: 99999 } }));
   const resolver = useYupValidationResolver(schemaValidation);
   const { control, handleSubmit } = useForm<IValues>({
     defaultValues: {
       nik: undefined,
-      date: new Date().toISOString(),
-      immunization: undefined,
+      immunizationDate: new Date().toISOString(),
+      type: undefined,
     },
     resolver
   });
@@ -45,14 +44,19 @@ const FormImmunization: React.FC<FormImmunizationProps> = ({ onSubmit }) => {
           name="nik"
           render={({ field, fieldState }) => (
             <Field label="Nama" error={fieldState.error?.message}>
-              <Select options={[{ label: 'name', value: 'nik' }]} {...field} placeholder="Pilih nama balita" />
+              <Select
+                {...field}
+                options={data.map((item: any) => ({ label: item.name, value: item.nik }))}
+                placeholder="Pilih nama balita"
+                loading={isLoading}
+              />
             </Field>
           )}
         />
         <div style={{ display: 'flex', gap: 16, flexGrow: 1 }}>
           <Controller
             control={control}
-            name="date"
+            name="immunizationDate"
             render={({ field, fieldState }) => (
               <Field label="Tanggal Pengecekan" error={fieldState.error?.message}>
                 <DatePickerBase {...field} />
@@ -61,7 +65,7 @@ const FormImmunization: React.FC<FormImmunizationProps> = ({ onSubmit }) => {
           />
           <Controller
             control={control}
-            name="immunization"
+            name="type"
             render={({ field, fieldState }) => (
               <Field label="Jenis Imunisasi" error={fieldState.error?.message}>
                 <Select options={[{ label: 'Jenis imunisasi', value: 'value imunisiasi' }]} {...field} placeholder="Pilih jenis imunisasi" />

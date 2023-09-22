@@ -110,11 +110,67 @@ const ToddlerContainer = () => {
       };
       const addToddler = await callApi(options);
       if (addToddler) {
-        onCloseModal();
         mutate();
+        onCloseModal();
+        message.success(!nikFocus ? 'Tambah data balita berhasil!' : 'Ubah data balita berhasil!');
       }
     } catch (error) {
       message.error(!nikFocus ? 'Tambah data balita gagal!' : 'Ubah data balita gagal!');
+    }
+  };
+
+  const onSubmitFormChecker = async (values: any) => {
+    try {
+      const options: AxiosRequestConfig = {
+        method: 'POST',
+        url: '/api/toddler/add-check',
+        data: values,
+      };
+      const addToddler = await callApi(options);
+      if (addToddler) {
+        mutate();
+        onCloseModal();
+        message.success('Tambah data pengecekan balita berhasil!');
+      }
+    } catch (error) {
+      message.error('Tambah data pengecekan balita gagal!');
+    }
+  };
+
+  const onSubmitFormDiarrhea = async (values: any) => {
+    try {
+      const options: AxiosRequestConfig = {
+        method: 'POST',
+        url: '/api/toddler/add-diarrhea',
+        data: values,
+      };
+      const addToddler = await callApi(options);
+      if (addToddler) {
+        mutate();
+        onCloseModal();
+        message.success('Tambah data balita diare berhasil!');
+      }
+    } catch (error) {
+      message.error('Tambah data balita diare gagal!');
+    }
+  };
+
+  
+  const onSubmitFormImmunization = async (values: any) => {
+    try {
+      const options: AxiosRequestConfig = {
+        method: 'POST',
+        url: '/api/toddler/add-immunization',
+        data: values,
+      };
+      const addToddler = await callApi(options);
+      if (addToddler) {
+        mutate();
+        onCloseModal();
+        message.success('Tambah data balita telah imunisasi berhasil!');
+      }
+    } catch (error) {
+      message.error('Tambah data balita telah imunisasi gagal!');
     }
   };
 
@@ -187,7 +243,7 @@ const ToddlerContainer = () => {
         onCancel={onCloseModal}
         destroyOnClose
       >
-        <FormChecker onSubmit={console.log} />
+        <FormChecker onSubmit={onSubmitFormChecker} />
       </Modal>
       <Modal
         title="Laporan Diare"
@@ -196,7 +252,7 @@ const ToddlerContainer = () => {
         onCancel={onCloseModal}
         destroyOnClose
       >
-        <FormDiarrhea onSubmit={console.log} />
+        <FormDiarrhea onSubmit={onSubmitFormDiarrhea} />
       </Modal>
       <Modal
         title="Imunisasi Balita"
@@ -205,7 +261,7 @@ const ToddlerContainer = () => {
         onCancel={onCloseModal}
         destroyOnClose
       >
-        <FormImmunization onSubmit={console.log} />
+        <FormImmunization onSubmit={onSubmitFormImmunization} />
       </Modal>
     </div>
   );

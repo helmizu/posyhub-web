@@ -13,11 +13,11 @@ export const toIdr = (value: number, negative: any = 'Rp 0') => {
   return negative;
 };
 
-export const birthDateToAge = (birthDate: string) => {
+export const birthDateToAge = (birthDate: string, type: 'default' | 'month' = 'default') => {
   const monthDiff = dayjs(new Date()).diff(birthDate, 'month');
+  if (type === 'month') return monthDiff;
   const year = Math.floor(monthDiff / 12);
   const month = monthDiff % 12;
-  
   if (year) return `${year} tahun ${month} bulan`;
   return `${month} bulan`; 
 };
