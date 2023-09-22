@@ -21,8 +21,8 @@ interface DataType {
   birthDate: string
   motherName: string
   fatherName: string
-  birthWeight: number
-  birthHeight: number
+  weight: number
+  height: number
   address: string
   gender: string
 }
@@ -51,8 +51,8 @@ const ToddlerContainer = () => {
     },
     {
       title: 'BB (Kg) / TB (cm)',
-      dataIndex: 'birthWeight',
-      render: (value, record) => `${value} Kg / ${record.birthHeight} cm`
+      dataIndex: 'weight',
+      render: (value, record) => `${value} Kg / ${record.height} cm`
     },
     {
       title: 'Nama Ayah',
