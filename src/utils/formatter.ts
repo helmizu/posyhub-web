@@ -21,3 +21,13 @@ export const birthDateToAge = (birthDate: string, type: 'default' | 'month' = 'd
   if (year) return `${year} tahun ${month} bulan`;
   return `${month} bulan`; 
 };
+
+
+export const birthDateToCheckDateAge = (birthDate: string, checkDate: string, type: 'default' | 'month' = 'default') => {
+  const monthDiff = dayjs(checkDate).diff(birthDate, 'month');
+  if (type === 'month') return monthDiff;
+  const year = Math.floor(monthDiff / 12);
+  const month = monthDiff % 12;
+  if (year) return `${year} tahun ${month} bulan`;
+  return `${month} bulan`; 
+};

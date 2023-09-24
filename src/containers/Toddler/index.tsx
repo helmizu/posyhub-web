@@ -13,6 +13,7 @@ import FormImmunization from './FormImmunization';
 import useSWR from 'swr';
 import callApi, { swrCallApi } from '@/utils/network';
 import { AxiosRequestConfig } from 'axios';
+import DetailToddler from './DetailToddler';
 
 interface DataType {
   _id: string
@@ -21,8 +22,8 @@ interface DataType {
   birthDate: string
   motherName: string
   fatherName: string
-  weight: number
-  height: number
+  currentWeight: number
+  currentHeight: number
   address: string
   gender: string
 }
@@ -30,6 +31,7 @@ interface DataType {
 const ToddlerContainer = () => {
   const { token: { colorTextSecondary } } = theme.useToken();
   const [formKey, setFormKey] = useState<'' | 'profile' | 'checker' | 'diarrhea' | 'immunization'>('');
+  const [openDetail, setOpenDetail] = useState(false);
   const [nikFocus, setNikFocus] = useState('');
   const { data, mutate, isLoading } = useSWR('/api/toddler/list', swrCallApi);
 
@@ -51,8 +53,8 @@ const ToddlerContainer = () => {
     },
     {
       title: 'BB (Kg) / TB (cm)',
-      dataIndex: 'weight',
-      render: (value, record) => `${value} Kg / ${record.height} cm`
+      dataIndex: 'weight-height',
+      render: (_, record) => `${record.currentWeight} Kg / ${record.currentHeight} cm`
     },
     {
       title: 'Nama Ayah',
@@ -73,7 +75,10 @@ const ToddlerContainer = () => {
                 key: 'detail',
                 label: 'Lihat Detail',
                 icon: <UilEye size={16} />,
-                onClick: () => console.log('view detail', record.nik)
+                onClick: () => {
+                  setOpenDetail(true);
+                  setNikFocus(record.nik);
+                }
               },
               {
                 key: 'edit',
@@ -262,6 +267,16 @@ const ToddlerContainer = () => {
         destroyOnClose
       >
         <FormImmunization onSubmit={onSubmitFormImmunization} />
+      </Modal>
+      <Modal
+        title="Informasi Balita"
+        open={openDetail}
+        footer={null}
+        onCancel={onCloseModal}
+        destroyOnClose
+        width="90%"
+      >
+        <DetailToddler data={data?.find((user: any) => user.nik === nikFocus)} />
       </Modal>
     </div>
   );
