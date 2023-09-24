@@ -27,7 +27,22 @@ interface IValues {
 }
 
 const schemaValidation = yup.object({
+  nik: yup.string().required('NIK harus diisi!'),
   name: yup.string().required('Nama harus diisi!'),
+  birthDate: yup.string().required('Tanggal lahir harus diisi!'),
+  address: yup.string().required('Alamat harus diisi!'),
+  phoneNumber: yup.string().required('Nomor HP / WA harus diisi!'),
+  economyStatus: yup.string().required('Status ekonomi harus diisi!'),
+  pregnancyNumber: yup.string().required('Jumlah hamil harus diisi!'),
+  youngestChildAge: yup.string().required('Umur anak terakhir harus diisi!'),
+  lastPeriod: yup.string().required('Haid terakhir harus diisi!'),
+  estimatedBirth: yup.string().required('Perkiraan persalinan harus diisi!'),
+  weight: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Berat badan harus diisi!'),
+  height: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Tinggi badan harus diisi!'),
+  bloodPressure: yup.string().required('Tensi harus diisi!'),
+  upperArmCircumference: yup.string().required('Lingkat lengan atas harus diisi!'),
+  bloodType: yup.string().required('Golongan darah harus diisi!'),
+  score: yup.string().required('Skor Pudji Rochyati harus diisi!'),
 }).required();
 
 interface FormPregnantProps {
@@ -60,6 +75,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit, defaultValues }) 
     },
     resolver
   });
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -120,12 +136,11 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit, defaultValues }) 
                 <Field label="Status Ekonomi" error={fieldState.error?.message}>
                   <Select
                     {...field}
-                    mode="tags"
                     style={{ width: '100%' }}
                     placeholder="Pilih Status Ekonomi"
                     options={[
-                      { value: 'gakin', label: 'Gakin' },
-                      { value: 'nonGakin', label: 'Non Gakin' },
+                      { value: 'Gakin', label: 'Gakin' },
+                      { value: 'Non Gakin', label: 'Non Gakin' },
                     ]}
                   />
                 </Field>
@@ -238,14 +253,13 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit, defaultValues }) 
                 <Field label="Golongan Darah" error={fieldState.error?.message}>
                   <Select
                     {...field}
-                    mode="tags"
                     style={{ width: '100%' }}
                     placeholder="Pilih Golongan Darah"
                     options={[
-                      { value: 'a', label: 'A' },
-                      { value: 'b', label: 'B' },
-                      { value: 'ab', label: 'AB' },
-                      { value: 'o', label: 'O' },
+                      { value: 'A', label: 'A' },
+                      { value: 'B', label: 'B' },
+                      { value: 'AB', label: 'AB' },
+                      { value: 'O', label: 'O' },
                     ]}
                   />
                 </Field>

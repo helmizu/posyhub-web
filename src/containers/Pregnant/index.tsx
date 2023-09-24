@@ -8,7 +8,7 @@ import { birthDateToAge, toPercentage } from '@/utils/formatter';
 import { UilEditAlt, UilEllipsisH, UilEye } from '@iconscout/react-unicons';
 import FormPregnant from './FormPregnant';
 import FormKB from '@/containers/Pregnant/FormKB';
-import FormPersalinan from '@/containers/Pregnant/FormPersalinan';
+import FormChildBirth from '@/containers/Pregnant/FormChildBirth';
 import useSWR from 'swr';
 import callApi, {swrCallApi} from '@/utils/network';
 import {AxiosRequestConfig} from 'axios';
@@ -106,11 +106,48 @@ const PregnantContainer = () => {
       };
       const addPregnant = await callApi(options);
       if (addPregnant) {
-        onCloseModal();
         mutate();
+        onCloseModal();
+        message.success(!nikFocus ? 'Tambah data ibu hamil berhasil!' : 'Ubah data ibu hamil berhasil!');
       }
     } catch (error) {
-      message.error(!nikFocus ? 'Tambah data ibu hamil gagal!' : 'Ubah data ibu hamil gagal!');
+      message.error(!nikFocus ? 'Tambah data ibu hamil gagal!' : 'Ubah data hamil gagal!');
+    }
+  };
+
+  const onSubmitFormChildBirth = async (values: any) => {
+    try {
+      const options: AxiosRequestConfig = {
+        method: 'POST',
+        url: '/api/pregnant/add-child-birth',
+        data: values,
+      };
+      const addToddler = await callApi(options);
+      if (addToddler) {
+        mutate();
+        onCloseModal();
+        message.success('Tambah data persalinan ibu hamil berhasil!');
+      }
+    } catch (error) {
+      message.error('Tambah data persalinan ibu hamil gagal!');
+    }
+  };
+
+  const onSubmitFormKB = async (values: any) => {
+    try {
+      const options: AxiosRequestConfig = {
+        method: 'POST',
+        url: '/api/pregnant/add-kb',
+        data: values,
+      };
+      const addToddler = await callApi(options);
+      if (addToddler) {
+        mutate();
+        onCloseModal();
+        message.success('Tambah data KB berhasil!');
+      }
+    } catch (error) {
+      message.error('Tambah data KB gagal!');
     }
   };
 
@@ -148,7 +185,7 @@ const PregnantContainer = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('profile')}>Ibu Hamil</Button>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('child-birth')}>Persalinan</Button>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('profile')}>KB</Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('kb')}>KB</Button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Input.Search placeholder="Cari di sini..." />
@@ -169,8 +206,9 @@ const PregnantContainer = () => {
         footer={null}
         onCancel={onCloseModal}
       >
-
-        <FormPregnant onSubmit={onSubmitFormPregnant} defaultValues={data?.find((user: any) => user.nik === nikFocus)} />
+        <FormPregnant
+          onSubmit={onSubmitFormPregnant}
+          defaultValues={data?.find((user: any) => user.nik === nikFocus)} />
       </Modal>
       <Modal
         title="Tambah KB"
@@ -178,7 +216,7 @@ const PregnantContainer = () => {
         footer={null}
         onCancel={onCloseModal}
       >
-        <FormKB onSubmit={console.log} />
+        <FormKB onSubmit={onSubmitFormKB} />
       </Modal>
       <Modal
         title="Tambah Persalinan"
@@ -186,7 +224,7 @@ const PregnantContainer = () => {
         footer={null}
         onCancel={onCloseModal}
       >
-        <FormPersalinan onSubmit={console.log} />
+        <FormChildBirth onSubmit={onSubmitFormChildBirth} />
       </Modal>
     </div>
   );

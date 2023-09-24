@@ -5,31 +5,52 @@ import {Button, Input, Radio, Select} from 'antd';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import useSWR from 'swr';
+import {swrCallApi} from '@/utils/network';
 
 interface IValues {
-  name: string
-  tanggalPersalinan: string
+  nik: string
+  childBirthDate: string
+  childBirthType: string
   gender: string
-  birthWeight: number
-  birthHeight: number
-  tempatPersalinan: string
-  KBPaskaSalin: string
-  note: string
+  weight: number
+  height: number
+  childBirthLocation: string
+  postChildBirth: string
+  information: string
 }
 
 const schemaValidation = yup.object({
-  name: yup.string().required('Nama harus diisi!'),
+  nik: yup.string().required('Nama harus diisi!'),
+  childBirthDate: yup.string().required('Tanggal harus diisi!'),
+  childBirthType: yup.string().required('Jenis persalinan harus diisi!'),
+  gender: yup.string().required('Jenis kelamin harus diisi!'),
+  weight: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Berat badan harus diisi!'),
+  height: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Tinggi badan harus diisi!'),
+  childBirthLocation:yup.string().required('Tempat persalinan harus diisi!'),
+  postChildBirth: yup.string().required('KB paska salin harus diisi!'),
 }).required();
 
 interface FormPersalinanProps {
   onSubmit: (value: IValues) => void;
+
 }
 
-
-const FormPersalinan: React.FC<FormPersalinanProps> = ({ onSubmit }) => {
+const FormChildBirth: React.FC<FormPersalinanProps> = ({ onSubmit}) => {
+  const { data = [], isLoading } = useSWR('/api/pregnant/list', (url) => swrCallApi(url, { params: { page: 1, size: 99999 } }));
   const resolver = useYupValidationResolver(schemaValidation);
-  const { control, handleSubmit } = useForm<IValues>({
-    defaultValues: {},
+  const { control, handleSubmit, formState } = useForm<IValues>({
+    defaultValues: {
+      nik: undefined,
+      childBirthDate: new Date().toISOString(),
+      childBirthType: undefined,
+      gender: undefined,
+      weight: undefined,
+      height: undefined,
+      childBirthLocation: undefined,
+      postChildBirth: undefined,
+      information: undefined,
+    },
     resolver
   });
 
@@ -38,28 +59,38 @@ const FormPersalinan: React.FC<FormPersalinanProps> = ({ onSubmit }) => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Controller
           control={control}
-          name="name"
+          name="nik"
           render={({ field, fieldState }) => (
             <Field label="Nama" error={fieldState.error?.message}>
               <Select
                 {...field}
-                mode="tags"
                 style={{ width: '100%' }}
                 placeholder="Pilih nama ibu hamil"
-                options={[
-                  { value: 'citra', label: 'Citra' },
-                  { value: 'bunga', label: 'Bunga' },
-                ]}
+                options={data.map((item: any) => ({ label: item.name, value: item.nik }))}
+                loading={isLoading}
               />
             </Field>
           )}
         />
         <Controller
           control={control}
-          name="tanggalPersalinan"
+          name="childBirthDate"
           render={({ field, fieldState }) => (
             <Field label="Tanggal Persalinan" error={fieldState.error?.message}>
               <DatePickerBase {...field} />
+            </Field>
+          )}
+        />
+        <Controller
+          control={control}
+          name="childBirthType"
+          render={({ field, fieldState }) => (
+            <Field label="Jenis Persalinann" error={fieldState.error?.message}>
+              <Radio.Group {...field}>
+                <Radio value="Normal">Normal</Radio>
+                <Radio value="SC / Operasi">SC / Operasi</Radio>
+                <Radio value="Tindakan /  Vacum">Tindakan /  Vacum</Radio>
+              </Radio.Group>
             </Field>
           )}
         />
@@ -70,15 +101,15 @@ const FormPersalinan: React.FC<FormPersalinanProps> = ({ onSubmit }) => {
             render={({ field, fieldState }) => (
               <Field label="Jenis Kelamin" error={fieldState.error?.message}>
                 <Radio.Group {...field}>
-                  <Radio value="female">Perempuan</Radio>
-                  <Radio value="male">Laki - laki</Radio>
+                  <Radio value="Perempuan">Perempuan</Radio>
+                  <Radio value="Laki - laki">Laki - laki</Radio>
                 </Radio.Group>
               </Field>
             )}
           />
           <Controller
             control={control}
-            name="birthWeight"
+            name="weight"
             render={({ field, fieldState }) => (
               <Field label="Berat Badan Lahir" error={fieldState.error?.message}>
                 <Input {...field} suffix="Kg" placeholder="5" />
@@ -87,7 +118,7 @@ const FormPersalinan: React.FC<FormPersalinanProps> = ({ onSubmit }) => {
           />
           <Controller
             control={control}
-            name="birthHeight"
+            name="height"
             render={({ field, fieldState }) => (
               <Field label="Tinggi Badan Lahir" error={fieldState.error?.message}>
                 <Input {...field} suffix="cm" placeholder="45" />
@@ -97,7 +128,7 @@ const FormPersalinan: React.FC<FormPersalinanProps> = ({ onSubmit }) => {
         </div>
         <Controller
           control={control}
-          name="tempatPersalinan"
+          name="childBirthLocation"
           render={({ field, fieldState }) => (
             <Field label="Tempat Persalinan" error={fieldState.error?.message}>
               <Input {...field} placeholder="Rumah Sakit Ibu dan Anak" />
@@ -106,7 +137,7 @@ const FormPersalinan: React.FC<FormPersalinanProps> = ({ onSubmit }) => {
         />
         <Controller
           control={control}
-          name="KBPaskaSalin"
+          name="postChildBirth"
           render={({ field, fieldState }) => (
             <Field label="KB Paska Salin" error={fieldState.error?.message}>
               <Input {...field} placeholder="" />
@@ -115,7 +146,7 @@ const FormPersalinan: React.FC<FormPersalinanProps> = ({ onSubmit }) => {
         />
         <Controller
           control={control}
-          name="note"
+          name="information"
           render={({ field, fieldState }) => (
             <Field label="Keterangan (Masalah / Komplikasi)" error={fieldState.error?.message}>
               <Input {...field} placeholder=" " />
@@ -123,11 +154,11 @@ const FormPersalinan: React.FC<FormPersalinanProps> = ({ onSubmit }) => {
           )}
         />
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <Button type="primary" htmlType="submit">Simpan</Button>
+          <Button type="primary" htmlType="submit" loading={formState.isSubmitting}>Simpan</Button>
         </div>
       </div>
     </form>
   );
 };
 
-export default FormPersalinan;
+export default FormChildBirth;
