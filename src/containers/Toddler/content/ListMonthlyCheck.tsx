@@ -73,7 +73,7 @@ const ListMonthlyCheck: React.FC<{ nik: string; birthDate: string }> = ({ nik = 
 
   return (
     <div style={{ display: 'flex', gap: 16, flexDirection: 'column' }}>
-      <Typography.Title level={4}>Data Pengecekan Bulanan</Typography.Title>
+      {/* <Typography.Title level={4}>Data Pengecekan Bulanan</Typography.Title> */}
       {/* <div style={{ display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         </div>

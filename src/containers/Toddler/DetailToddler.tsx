@@ -89,7 +89,7 @@ const TABS = [
 const DetailToddler: React.FC<{ data: typeof MOCK_DATA; }> = ({ data }) => {
   return (
     <Layout.Content>
-      <Descriptions title="Informasi Balita" items={mapData(data)} colon={false} />
+      <Descriptions layout="vertical" items={mapData(data)} colon={false} />
       <Tabs
         defaultActiveKey="check"
         type="card"
