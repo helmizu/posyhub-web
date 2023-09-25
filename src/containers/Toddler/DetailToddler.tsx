@@ -23,47 +23,47 @@ const mapData = (value: typeof MOCK_DATA): DescriptionsItemType[] => {
     {
       key: 'name',
       label: 'Nama',
-      children: value.name
+      children: value?.name
     },
     {
       key: 'nik',
       label: 'NIK',
-      children: value.nik
+      children: value?.nik
     },
     {
       key: 'gender',
       label: 'Jenis Kelamin',
-      children: value.gender
+      children: value?.gender
     },
     {
       key: 'birthDate',
       label: 'Tanggal Lahir',
-      children: formatDate(value.birthDate, 'DD/MM/YYYY')
+      children: formatDate(value?.birthDate, 'DD/MM/YYYY')
     },
     {
       key: 'birthDate',
       label: 'Umur',
-      children: birthDateToAge(value.birthDate)
+      children: birthDateToAge(value?.birthDate)
     },
     {
       key: 'weight',
       label: 'BB (Kg) / TB (cm)',
-      children: `${value.currentWeight} Kg / ${value.currentHeight} cm`
+      children: `${value?.currentWeight} Kg / ${value?.currentHeight} cm`
     },
     {
       key: 'fatherName',
       label: 'Nama Ayah',
-      children: value.fatherName
+      children: value?.fatherName
     },
     {
       key: 'motherName',
       label: 'Nama Ibu',
-      children: value.motherName
+      children: value?.motherName
     },
     {
       key: 'address',
       label: 'Alamat',
-      children: value.address
+      children: value?.address
     }
   ];
 };
@@ -89,7 +89,9 @@ const TABS = [
 const DetailToddler: React.FC<{ data: typeof MOCK_DATA; }> = ({ data }) => {
   return (
     <Layout.Content>
-      <Descriptions layout="vertical" items={mapData(data)} colon={false} />
+      <div style={{ paddingBlock: 8 }}>
+        <Descriptions title="" labelStyle={{ marginBottom: -8 }} layout="vertical" items={mapData(data)} colon={false} />
+      </div>
       <Tabs
         defaultActiveKey="check"
         type="card"

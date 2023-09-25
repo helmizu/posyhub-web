@@ -35,12 +35,12 @@ const ListMonthlyCheck: React.FC<{ nik: string; birthDate: string }> = ({ nik = 
       render: (value) => birthDateToCheckDateAge(birthDate, value)
     },
     {
-      title: 'Berat Badan (Kg)',
+      title: 'BB (Kg)',
       dataIndex: 'weight',
       render: (value) => `${value} Kg`
     },
     {
-      title: 'Tinggi Badan (cm)',
+      title: 'TB (cm)',
       dataIndex: 'height',
       render: (value) => `${value} cm`
     },
@@ -55,7 +55,7 @@ const ListMonthlyCheck: React.FC<{ nik: string; birthDate: string }> = ({ nik = 
       render: (value) => `${value} cm`
     },
     {
-      title: 'BBSK/BBK/BBL',
+      title: 'BBSK/BBK/BBN/BBL',
       dataIndex: 'weightStatus',
       render: value => value
     },

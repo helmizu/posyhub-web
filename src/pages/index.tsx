@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import Layout from '@/components/templates/Layout';
-import HomeContainer from '@/containers/Home';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { Spin, Typography, theme } from 'antd';
 
 const Home = () => {
+  const { token: { colorPrimary } } = theme.useToken();
   const router = useRouter();
   const { status } = useSession();
   useEffect(() => {
@@ -16,9 +16,10 @@ const Home = () => {
   }, []);
 
   return (
-    <Layout title="Home">
-      <HomeContainer />
-    </Layout>
+    <div style={{ height: '100vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
+      <Spin size="large" />
+      <Typography.Text strong style={{ color: colorPrimary }}>Checking...</Typography.Text>
+    </div>
   );
 };
 

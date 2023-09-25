@@ -101,6 +101,7 @@ const ToddlerContainer = () => {
 
   const onCloseModal = () => {
     setFormKey('');
+    setOpenDetail(false);
     setNikFocus('');
   };
 
@@ -142,6 +143,25 @@ const ToddlerContainer = () => {
     }
   };
 
+  const onUpdateFormChecker = async (nik: string, values: any) => {
+    try {
+      const options: AxiosRequestConfig = {
+        method: 'POST',
+        url: '/api/toddler/edit-check',
+        data: values,
+        params: { nik }
+      };
+      const addToddler = await callApi(options);
+      if (addToddler) {
+        mutate();
+        onCloseModal();
+        message.success('Ubah data pengecekan balita berhasil!');
+      }
+    } catch (error) {
+      message.error('Ubah data pengecekan balita gagal!');
+    }
+  };
+
   const onSubmitFormDiarrhea = async (values: any) => {
     try {
       const options: AxiosRequestConfig = {
@@ -160,7 +180,7 @@ const ToddlerContainer = () => {
     }
   };
 
-  
+
   const onSubmitFormImmunization = async (values: any) => {
     try {
       const options: AxiosRequestConfig = {
@@ -236,7 +256,7 @@ const ToddlerContainer = () => {
         onCancel={onCloseModal}
         destroyOnClose
       >
-        <FormToddler 
+        <FormToddler
           onSubmit={onSubmitFormToddler}
           defaultValues={data?.find((user: any) => user.nik === nikFocus)}
         />
@@ -248,7 +268,7 @@ const ToddlerContainer = () => {
         onCancel={onCloseModal}
         destroyOnClose
       >
-        <FormChecker onSubmit={onSubmitFormChecker} />
+        <FormChecker onSubmit={onSubmitFormChecker} onUpdate={onUpdateFormChecker} />
       </Modal>
       <Modal
         title="Laporan Diare"
