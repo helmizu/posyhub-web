@@ -6,7 +6,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import useSWR from 'swr';
-import {swrCallApi} from '@/utils/network';
+import { swrCallApi } from '@/utils/network';
 
 interface IValues {
   nik: string
@@ -61,7 +61,7 @@ const FormKB: React.FC<FormKBProps> = ({ onSubmit }) => {
                 style={{ width: '100%' }}
                 placeholder="Pilih nama ibu hamil"
                 options={data.map((item: any) => ({ label: item.name, value: item.nik }))}
-                isLoading={isLoading}
+                loading={isLoading}
               />
             </Field>
           )}
@@ -105,7 +105,7 @@ const FormKB: React.FC<FormKBProps> = ({ onSubmit }) => {
           render={({ field, fieldState }) => (
             <Field label="Alasan BerKB" error={fieldState.error?.message}>
               <Checkbox {...field} >
-                                PUS 4T
+                PUS 4T
               </Checkbox>
             </Field>
           )}
