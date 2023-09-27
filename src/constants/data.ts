@@ -1,1 +1,3 @@
 export const IMMUNIZATION = ['HB 0', 'POLIO 1', 'POLIO 2', 'POLIO 3', 'POLIO 4', 'IPV', 'PCV 1', 'PCV 2', 'PCV 3', 'CAMPAK RUBELLA LANJUTAN', 'DPT HB HIB LANJUTAN', 'CAMPAK RUBELLA LANJUTAN'];
+
+export const ROLE = ['Admin', 'Kader'];
