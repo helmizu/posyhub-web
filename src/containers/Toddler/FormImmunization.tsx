@@ -1,5 +1,6 @@
 import DatePickerBase from '@/components/DatePickerBase';
 import Field from '@/components/Field';
+import { IMMUNIZATION } from '@/constants/data';
 import { swrCallApi } from '@/utils/network';
 import { useYupValidationResolver } from '@/utils/yupResolver';
 import { Button, Checkbox, Input, Radio, Select } from 'antd';
@@ -71,7 +72,7 @@ const FormImmunization: React.FC<FormImmunizationProps> = ({ onSubmit }) => {
               name="type"
               render={({ field, fieldState }) => (
                 <Field label="Jenis Imunisasi" error={fieldState.error?.message}>
-                  <Select options={[{ label: 'Jenis imunisasi', value: 'value imunisiasi' }]} {...field} placeholder="Pilih jenis imunisasi" />
+                  <Select options={IMMUNIZATION.map(item => ({ label: item, value: item }))} {...field} placeholder="Pilih jenis imunisasi" />
                 </Field>
               )}
             />
