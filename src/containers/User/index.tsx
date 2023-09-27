@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Card, Input, Modal, Table, Typography, message } from 'antd';
-import { PrinterOutlined } from '@ant-design/icons';
+import { PrinterOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import FormUser from './FormUser';
 import useSWR from 'swr';
@@ -17,9 +17,7 @@ interface DataType {
 }
 
 const UserContainer = () => {
-  const [formKey, setFormKey] = useState<'' | 'profile' | 'checker' | 'diarrhea' | 'immunization'>('');
-  const [openDetail, setOpenDetail] = useState(false);
-  const [nikFocus, setNikFocus] = useState('');
+  const [addForm, setAddForm] = useState(false);
   const { data = [], mutate, isLoading } = useSWR('/api/user/list', swrCallApi);
 
   const columns: ColumnsType<DataType> = [
@@ -42,9 +40,7 @@ const UserContainer = () => {
   ];
 
   const onCloseModal = () => {
-    setFormKey('');
-    setOpenDetail(false);
-    setNikFocus('');
+    setAddForm(false);
   };
 
   const onSubmitFormUser = async (values: any) => {
@@ -70,6 +66,7 @@ const UserContainer = () => {
       <Typography.Title level={4}>Data Pengguna</Typography.Title>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddForm(true)}>Pengguna</Button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Input.Search placeholder="Cari di sini..." />
@@ -85,8 +82,8 @@ const UserContainer = () => {
         />
       </Card>
       <Modal
-        title="Tambah Balita"
-        open={formKey === 'profile'}
+        title="Tambah Pengguna"
+        open={addForm}
         footer={null}
         onCancel={onCloseModal}
         destroyOnClose
