@@ -34,6 +34,7 @@ const ToddlerContainer = () => {
   const [openDetail, setOpenDetail] = useState(false);
   const [nikFocus, setNikFocus] = useState('');
   const { data = [], mutate, isLoading } = useSWR('/api/toddler/list', swrCallApi);
+  const { data: { balitaTotal = 0, balitaThisMonth = 0, } = {}, isLoading: isLoadingStats } = useSWR('/api/toddler/stats', swrCallApi);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -205,20 +206,20 @@ const ToddlerContainer = () => {
       <div style={{ display: 'flex', gap: 16 }}>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Total Balita</Typography.Text>
-          <Typography.Title level={5}>100</Typography.Title>
+          <Typography.Title level={5}>{balitaTotal}</Typography.Title>
         </Card>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Balita Hadir {formatDate(new Date(), 'MMMM YYYY')}</Typography.Text>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>11</Typography.Title>
-            <Badge count={`${toPercentage(11 * 100 / 100)}%`} color="#697077" />
+            <Typography.Title level={5}>{balitaThisMonth}</Typography.Title>
+            <Badge count={`${toPercentage(balitaThisMonth * 100 / balitaTotal)}%`} color="#697077" />
           </div>
         </Card>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Balita Dalam Pantauan</Typography.Text>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>5</Typography.Title>
-            <Badge count={`${toPercentage(5 * 100 / 100)}%`} color="#697077" />
+            <Typography.Title level={5}>0</Typography.Title>
+            <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
           </div>
         </Card>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
