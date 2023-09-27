@@ -46,8 +46,8 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit }) => {
   const $username = watch('username');
   const $email = watch('email');
 
-  const isDuplicatedUsername = !!data?.find((item: IValues) => item.username === $username);
-  const isDuplicatedEmail = !!data?.find((item: IValues) => item.email === $email);
+  const isDuplicatedUsername = !!$username && !!data?.find((item: IValues) => item.username === $username);
+  const isDuplicatedEmail = !!$email && !!data?.find((item: IValues) => item.email === $email);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -66,7 +66,7 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit }) => {
           control={control}
           name="email"
           render={({ field, fieldState }) => (
-            <Field label="Email" error={isDuplicatedEmail ? '*Email telah terdaftar!' : fieldState.error?.message}>
+            <Field label="Email" error={isDuplicatedEmail ? 'Email telah terdaftar!' : fieldState.error?.message}>
               <Input {...field} placeholder="user.admin@mail.com" />
             </Field>
           )}
@@ -75,7 +75,7 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit }) => {
           control={control}
           name="username"
           render={({ field, fieldState }) => (
-            <Field label="Username" error={isDuplicatedUsername ? '*Username telah terdaftar!' : fieldState.error?.message}>
+            <Field label="Username" error={isDuplicatedUsername ? 'Username telah terdaftar!' : fieldState.error?.message}>
               <Input {...field} placeholder="admin001" />
             </Field>
           )}

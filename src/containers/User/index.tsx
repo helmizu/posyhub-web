@@ -70,7 +70,6 @@ const UserContainer = () => {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Input.Search placeholder="Cari di sini..." />
-          <Button icon={<PrinterOutlined />}>Cetak</Button>
         </div>
       </div>
       <Card bordered bodyStyle={{ padding: 0 }}>
