@@ -21,6 +21,7 @@ const ListImmunization: React.FC<{ nik: string; birthDate: string }> = ({ nik = 
       title: 'Tanggal Imunisasi',
       dataIndex: 'immunizationDate',
       render: (value) => formatDate(value, 'DD MMM YYYY'),
+      width: 240,
     },
     {
       title: 'Umur',
@@ -47,10 +48,11 @@ const ListImmunization: React.FC<{ nik: string; birthDate: string }> = ({ nik = 
       </div> */}
       <Card bordered bodyStyle={{ padding: 0 }}>
         <Table
-          rowKey={(record) => record.nik}
+          rowKey={(record) => record._id}
           columns={columns}
           dataSource={data}
           loading={isLoading}
+          pagination={false}
         />
       </Card>
     </div>

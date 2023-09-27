@@ -84,10 +84,11 @@ const ListMonthlyCheck: React.FC<{ nik: string; birthDate: string }> = ({ nik = 
       </div> */}
       <Card bordered bodyStyle={{ padding: 0 }}>
         <Table
-          rowKey={(record) => record.nik}
+          rowKey={(record) => record._id}
           columns={columns}
           dataSource={data}
           loading={isLoading}
+          pagination={false}
         />
       </Card>
     </div>

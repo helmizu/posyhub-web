@@ -4,6 +4,8 @@ import { Descriptions, Layout, Tabs } from 'antd';
 import type { DescriptionsItemType } from 'antd/es/descriptions';
 import React from 'react';
 import ListMonthlyCheck from './content/ListMonthlyCheck';
+import ListImmunization from './content/ListImmunization';
+import ListDiarrhea from './content/ListDiarrhea';
 
 const MOCK_DATA = {
   '_id': '6509afddbc64143b7e1c109c',
@@ -14,8 +16,8 @@ const MOCK_DATA = {
   'fatherName': 'Superman',
   'address': 'Jl. Raya Araya, Malang, Jawa Timur',
   'gender': 'Perempuan',
-  'currentHeight': 0,
-  'currentWeight': 0
+  'height': 0,
+  'weight': 0
 };
 
 const mapData = (value: typeof MOCK_DATA): DescriptionsItemType[] => {
@@ -48,7 +50,7 @@ const mapData = (value: typeof MOCK_DATA): DescriptionsItemType[] => {
     {
       key: 'weight',
       label: 'BB (Kg) / TB (cm)',
-      children: `${value?.currentWeight} Kg / ${value?.currentHeight} cm`
+      children: `${value?.weight} Kg / ${value?.height} cm`
     },
     {
       key: 'fatherName',
@@ -77,12 +79,12 @@ const TABS = [
   {
     key: 'immunization',
     label: 'Laporan Imunisasi',
-    children: () => <div>Daftar Laporan Imunisasi</div>
+    children: ListImmunization
   },
   {
     key: 'diarrhea',
     label: 'Laporan Diare',
-    children: () => <div>Daftar Laporan Diare</div>
+    children: ListDiarrhea
   }
 ];
 

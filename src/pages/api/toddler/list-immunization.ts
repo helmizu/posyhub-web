@@ -14,7 +14,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     const requestConfig: AxiosRequestConfig = {
       method: 'GET',
       baseURL: process.env.API_BASE_URL,
-      url: `/immunization/${request.query.nik}`,
+      url: `/immunization-check/${request.query.nik}`,
       params,
       headers: {
         Authorization: `Bearer ${accessToken || ''}`

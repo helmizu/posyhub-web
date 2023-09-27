@@ -22,8 +22,8 @@ interface DataType {
   birthDate: string
   motherName: string
   fatherName: string
-  currentWeight: number
-  currentHeight: number
+  weight: number
+  height: number
   address: string
   gender: string
 }
@@ -33,7 +33,7 @@ const ToddlerContainer = () => {
   const [formKey, setFormKey] = useState<'' | 'profile' | 'checker' | 'diarrhea' | 'immunization'>('');
   const [openDetail, setOpenDetail] = useState(false);
   const [nikFocus, setNikFocus] = useState('');
-  const { data, mutate, isLoading } = useSWR('/api/toddler/list', swrCallApi);
+  const { data = [], mutate, isLoading } = useSWR('/api/toddler/list', swrCallApi);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -54,7 +54,7 @@ const ToddlerContainer = () => {
     {
       title: 'BB (Kg) / TB (cm)',
       dataIndex: 'weight-height',
-      render: (_, record) => `${record.currentWeight} Kg / ${record.currentHeight} cm`
+      render: (_, record) => `${record.weight} Kg / ${record.height} cm`
     },
     {
       title: 'Nama Ayah',

@@ -21,7 +21,9 @@ export default async function handler(request: NextApiRequest, response: NextApi
     const res = await callApi(requestConfig);
     return response.status(res?.status).json(res?.data);
   } catch (error: any) {
-    const status = error?.status || error?.response?.data?.status || 500;
-    return response.status(status).json(error?.response?.data || { message: error?.message || '' });
+    console.log({ error });
+    let status = error?.status || error?.response?.data?.status || 500;
+    if (error.code === 'Unauthorized') status = 401;
+    return response.status(status).json(!error?.message ? error?.response?.data : { message: error?.message || '' });
   }
 }

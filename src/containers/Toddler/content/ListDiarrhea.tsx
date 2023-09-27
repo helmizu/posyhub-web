@@ -16,14 +16,15 @@ interface DataType {
   ageCategory: string
 }
 
-const ListImmunization: React.FC<{ nik: string; birthDate: string }> = ({ nik = '', birthDate = '' }) => {
-  const { data, isLoading } = useSWR('/api/toddler/list-immunization', (url) => swrCallApi(url, { params: { nik } }));
+const ListDiarrhea: React.FC<{ nik: string; birthDate: string }> = ({ nik = '', birthDate = '' }) => {
+  const { data, isLoading } = useSWR('/api/toddler/list-diarrhea', (url) => swrCallApi(url, { params: { nik } }));
 
   const columns: ColumnsType<DataType> = [
     {
       title: 'Tanggal Pengecekan',
       dataIndex: 'checkDate',
       render: (value) => formatDate(value, 'DD MMM YYYY'),
+      width: 240,
     },
     {
       title: 'Umur',
@@ -56,14 +57,15 @@ const ListImmunization: React.FC<{ nik: string; birthDate: string }> = ({ nik = 
       </div> */}
       <Card bordered bodyStyle={{ padding: 0 }}>
         <Table
-          rowKey={(record) => record.nik}
+          rowKey={(record) => record._id}
           columns={columns}
           dataSource={data}
           loading={isLoading}
+          pagination={false}
         />
       </Card>
     </div>
   );
 };
 
-export default ListImmunization;
+export default ListDiarrhea;
