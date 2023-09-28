@@ -33,7 +33,6 @@ const schemaValidation = yup.object({
 
 interface FormPersalinanProps {
   onSubmit: (value: IValues) => void;
-
 }
 
 const FormChildBirth: React.FC<FormPersalinanProps> = ({ onSubmit}) => {

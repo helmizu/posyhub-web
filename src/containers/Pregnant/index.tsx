@@ -12,6 +12,7 @@ import FormChildBirth from '@/containers/Pregnant/FormChildBirth';
 import useSWR from 'swr';
 import callApi, {swrCallApi} from '@/utils/network';
 import {AxiosRequestConfig} from 'axios';
+import DetailChildBirth from '@/containers/Pregnant/DetailChildBirth';
 
 interface DataType {
   _id: string
@@ -28,6 +29,7 @@ interface DataType {
 const PregnantContainer = () => {
   const { token: { colorTextSecondary } } = theme.useToken();
   const [formKey, setFormKey] = useState<'' | 'profile' | 'child-birth' | 'kb'>('');
+  const [openDetail, setOpenDetail] = useState(false);
   const [nikFocus, setNikFocus] = useState('');
   const { data, mutate, isLoading } = useSWR('/api/pregnant/list', swrCallApi);
 
@@ -70,7 +72,10 @@ const PregnantContainer = () => {
                 key: 'detail',
                 label: 'Lihat Detail',
                 icon: <UilEye size={16} />,
-                onClick: () => console.log('view detail', record.nik)
+                onClick: () => {
+                  setOpenDetail(true);
+                  setNikFocus(record.nik);
+                }
               },
               {
                 key: 'edit',
@@ -93,6 +98,7 @@ const PregnantContainer = () => {
   const onCloseModal = () => {
     setFormKey('');
     setNikFocus('');
+    setOpenDetail(false);
   };
 
   const onSubmitFormPregnant = async (values: any) => {
@@ -225,6 +231,16 @@ const PregnantContainer = () => {
         onCancel={onCloseModal}
       >
         <FormChildBirth onSubmit={onSubmitFormChildBirth} />
+      </Modal>
+      <Modal
+        title="Informasi Ibu Hamil"
+        open={openDetail}
+        footer={null}
+        onCancel={onCloseModal}
+        destroyOnClose
+        width="90%"
+      >
+        <DetailChildBirth data={data?.find((user: any) => user.nik === nikFocus)} />
       </Modal>
     </div>
   );
