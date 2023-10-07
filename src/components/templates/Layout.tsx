@@ -85,8 +85,9 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
           <Content
             style={{
               padding: 24,
-              minHeight: 'calc(100vh - 64px)',
+              height: 'calc(100vh - 64px)',
               background: '#EDEDED',
+              overflowY: 'auto',
             }}
           >
             {children}
