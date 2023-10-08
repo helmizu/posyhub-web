@@ -14,6 +14,7 @@ import useSWR from 'swr';
 import callApi, { swrCallApi } from '@/utils/network';
 import { AxiosRequestConfig } from 'axios';
 import DetailToddler from './DetailToddler';
+import { TDocumentTemplate } from '@/types/document';
 
 interface DataType {
   _id: string
@@ -200,6 +201,31 @@ const ToddlerContainer = () => {
     }
   };
 
+  const onGenerateDocument = async (type: TDocumentTemplate) => {
+    try {
+      const options: AxiosRequestConfig = {
+        method: 'GET',
+        url: '/api/document/generate',
+        params: { type }
+      };
+      const generated = await callApi(options);
+      if (generated) {
+        message.success('Dokumen telah berhasil disimpan!');
+        let downloadLink = document.createElement('a');
+        downloadLink.href = generated?.url;
+        downloadLink.download = generated?.name || true;
+        downloadLink.target = '_blank';
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      }
+    } catch (error) {
+      console.log({ error });
+      message.error('Dokumen gagal disimpan!');
+    }
+  };
+
   return (
     <div style={{ display: 'flex', gap: 16, flexDirection: 'column' }}>
       <Typography.Title level={4}>Data Balita</Typography.Title>
@@ -239,7 +265,7 @@ const ToddlerContainer = () => {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Input.Search placeholder="Cari di sini..." />
-          <Button icon={<PrinterOutlined />}>Cetak</Button>
+          <Button icon={<PrinterOutlined />} onClick={() => onGenerateDocument('balita')}>Cetak</Button>
         </div>
       </div>
       <Card bordered bodyStyle={{ padding: 0 }}>

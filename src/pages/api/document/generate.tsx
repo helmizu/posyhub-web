@@ -12,14 +12,13 @@ export default async function handler(request: NextApiRequest, response: NextApi
     const requestConfig: AxiosRequestConfig = {
       method: 'GET',
       baseURL: process.env.API_BASE_URL,
-      url: '/stats',
-      params: request.query,
+      url: `/generate/pdf/${request.query.type}`,
       headers: {
         Authorization: `Bearer ${accessToken || ''}`
       }
     };
     const res = await callApi(requestConfig);
-    return response.status(res?.status).json(res?.data);
+    return response.status(res?.status).send(res?.data);
   } catch (error: any) {
     const status = error?.status || error?.response?.data?.status || 500;
     return response.status(status).json(error?.response?.data || { message: error?.message || '' });

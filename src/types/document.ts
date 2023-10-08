@@ -1,0 +1,1 @@
+export type TDocumentTemplate = 'balita' | 'bulananKB' | 'ddtk' | 'diare' | 'imunisasi' | 'pregnant' | 'rekapKB';
