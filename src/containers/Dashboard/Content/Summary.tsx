@@ -1,46 +1,51 @@
 import { Card } from 'antd';
 import React from 'react';
 import CardInformation from './CardInformation';
+import { IData } from '../Dashboard';
 
-const SummaryContent = () => {
+const SummaryContent: React.FC<{ data: IData; loading?: boolean }> = ({ data, loading = false }) => {
   return (
     <Card title="Ringkasan">
       <div style={{ display: 'flex', gap: 16 }}>
-        <CardInformation 
-          variant="toddler" 
+        <CardInformation
+          loading={loading}
+          variant="toddler"
           title="Total Balita"
-          code="S" 
-          total={30}
-          male={15}
-          female={15}
-          infant={20} 
-          toddler={10}
+          code="S"
+          total={data.totalBalita?.total}
+          male={data.totalBalita?.male}
+          female={data.totalBalita?.female}
+          infant={data.totalBalita?.infant}
+          toddler={data.totalBalita?.toddler}
         />
-        <CardInformation 
-          variant="toddler" 
-          title="Balita Sudah Timbang"
-          code="S" 
-          total={30}
-          male={15}
-          female={15}
-          infant={20} 
-          toddler={10}
+        <CardInformation
+          loading={loading}
+          variant="toddler"
+          title="Balita Sudah Ditimbang"
+          code="D"
+          total={data.totalBalitaAttend?.total}
+          male={data.totalBalitaAttend?.male}
+          female={data.totalBalitaAttend?.female}
+          infant={data.totalBalitaAttend?.infant}
+          toddler={data.totalBalitaAttend?.toddler}
         />
-        <CardInformation 
-          variant="pregnant" 
+        <CardInformation
+          loading={loading}
+          variant="pregnant"
           title="Total Ibu Hamil"
-          code="S" 
-          total={50}
-          newPregnant={20} 
-          oldPregant={30}
+          code="#"
+          total={data.totalPregnant?.total}
+          newPregnant={data.totalPregnant?.new}
+          oldPregant={data.totalPregnant?.old}
         />
-        <CardInformation 
-          variant="pregnant" 
+        <CardInformation
+          loading={loading}
+          variant="pregnant"
           title="Ibu Hamil Sudah Melahirkan"
-          code="S" 
-          total={30}
-          newPregnant={20} 
-          oldPregant={10}
+          code="#"
+          total={data.totalAlreadyBirth?.total}
+          newPregnant={data.totalAlreadyBirth?.new}
+          oldPregant={data.totalAlreadyBirth?.old}
         />
       </div>
     </Card>

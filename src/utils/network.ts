@@ -42,6 +42,7 @@ export const swrCallApi = async (url: string, options: AxiosRequestConfig) => {
     if (statusCode === 401) {
       return window.location.href = '/logout';
     }
+    console.log({ error });
     throw error;
   }
 };

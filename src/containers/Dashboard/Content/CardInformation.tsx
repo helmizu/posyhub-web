@@ -13,9 +13,10 @@ interface IProps {
   newPregnant?: number;
   oldPregant?: number;
   type?: 'compact' | 'highlight' | 'full';
+  loading?: boolean;
 }
 
-const CardInformation: React.FC<IProps> = ({ title, code, total, male, female, variant, infant, toddler, newPregnant, oldPregant, type = 'full' }) => {
+const CardInformation: React.FC<IProps> = ({ title, code, total, male, female, variant, infant, toddler, newPregnant, oldPregant, type = 'full', loading = false }) => {
   const isCompact = type === 'compact';
   const isHighlight = type === 'highlight';
 
@@ -25,6 +26,7 @@ const CardInformation: React.FC<IProps> = ({ title, code, total, male, female, v
       bordered
       style={{ flex: 1, textAlign: isHighlight ? 'center' : undefined }}
       className={(isCompact || isHighlight) ? 'card-compact' : ''}
+      loading={loading}
     >
       <div>
         {(isCompact || isHighlight) && (
@@ -35,7 +37,7 @@ const CardInformation: React.FC<IProps> = ({ title, code, total, male, female, v
         <Card.Meta
           avatar={!isHighlight && (<Avatar shape="square" size={isCompact ? 48 : 60}>{code}</Avatar>)}
           title={<Typography.Title level={(isCompact || isHighlight) ? 5 : 4} type="success">{total}</Typography.Title>}
-          description={!!(male || female) && (
+          description={!!(male !== undefined || female !== undefined) && (
             <Space align="center" size="middle">
               {male !== undefined && (<Typography.Text type="secondary" style={{ fontWeight: 400 }}>L: {male}</Typography.Text>)}
               {female !== undefined && (<Typography.Text type="secondary" style={{ fontWeight: 400 }}>P: {female}</Typography.Text>)}

@@ -1,60 +1,55 @@
 import { Card } from 'antd';
 import React from 'react';
 import CardInformation from './CardInformation';
+import { IData } from '../Dashboard';
 
-const ToddlerCheckContent = () => {
+const ToddlerCheckContent: React.FC<{ data: IData; loading?: boolean }> = ({ data, loading = false }) => {
   return (
     <Card title="Hasil Penimbangan">
       <div style={{ display: 'flex', gap: 16 }}>
-        <CardInformation 
-          variant="toddler" 
+        <CardInformation
+          loading={loading}
+          variant="toddler"
           title="Balita Naik Berat Badan"
-          code="S" 
-          total={30}
-          male={15}
-          female={15}
-          infant={20} 
-          toddler={10}
+          code="N"
+          total={data.totalBalitaGainWeight?.total}
+          male={data.totalBalitaGainWeight?.male}
+          female={data.totalBalitaGainWeight?.female}
+          infant={data.totalBalitaGainWeight?.infant}
+          toddler={data.totalBalitaGainWeight?.toddler}
         />
-        <CardInformation 
-          variant="toddler" 
+        <CardInformation
+          loading={loading}
+          variant="toddler"
           title="Balita Tidak Naik Berat Badan"
-          code="S" 
-          total={30}
-          male={15}
-          female={15}
-          infant={20} 
-          toddler={10}
+          code="T"
+          total={data.totalBalitaLossWeigth?.total}
+          male={data.totalBalitaLossWeigth?.male}
+          female={data.totalBalitaLossWeigth?.female}
+          infant={data.totalBalitaLossWeigth?.infant}
+          toddler={data.totalBalitaLossWeigth?.toddler}
         />
-        <CardInformation 
-          variant="toddler" 
-          title="Balita Ditimbang"
-          code="S" 
-          total={30}
-          male={15}
-          female={15}
-          infant={20} 
-          toddler={10}
+        <CardInformation
+          loading={loading}
+          variant="toddler"
+          title="Balita Tidak Hadir"
+          code=".-"
+          total={data.totalBalitaNotAttend?.total}
+          male={data.totalBalitaNotAttend?.male}
+          female={data.totalBalitaNotAttend?.female}
+          infant={data.totalBalitaNotAttend?.infant}
+          toddler={data.totalBalitaNotAttend?.toddler}
         />
-        <CardInformation 
-          variant="toddler" 
-          title="Balita Tidak Posyandu"
-          code="S" 
-          total={30}
-          male={15}
-          female={15}
-          infant={20} 
-          toddler={10}
-        />
-        <CardInformation 
-          variant="toddler" 
+        <CardInformation
+          loading={loading}
+          variant="toddler"
           title="Balita Terdaftar KMS"
-          code="S" 
-          total={30}
-          male={15}
-          female={15}
-          infant={20} 
-          toddler={10}
+          code="K"
+          total={data?.totalBalitaHaveKMS?.total ?? 0}
+          male={data?.totalBalitaHaveKMS?.male ?? 0}
+          female={data?.totalBalitaHaveKMS?.female ?? 0}
+          infant={data?.totalBalitaHaveKMS?.infant ?? 0}
+          toddler={data?.totalBalitaHaveKMS?.toddler ?? 0}
         />
       </div>
     </Card>

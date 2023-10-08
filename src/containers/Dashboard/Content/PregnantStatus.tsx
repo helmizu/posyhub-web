@@ -1,34 +1,29 @@
 import { Card } from 'antd';
 import React from 'react';
 import CardInformation from './CardInformation';
+import { IData } from '../Dashboard';
 
-const PregnantStatusContent = () => {
+const PregnantStatusContent: React.FC<{ data: IData; loading: boolean }> = ({ data, loading = false }) => {
   return (
     <Card title="Ibu Hamil">
       <div style={{ display: 'flex', gap: 16 }}>
-        <CardInformation 
-          variant="pregnant" 
+        <CardInformation
+          loading={loading}
+          variant="pregnant"
           title="Ibu Hamil Belum Melahirkan"
-          code="#" 
-          total={50}
-          newPregnant={20} 
-          oldPregant={30}
+          code="#"
+          total={data.totalBirthYet?.total}
+          newPregnant={data.totalBirthYet?.new}
+          oldPregant={data.totalBirthYet?.old}
         />
-        <CardInformation 
-          variant="pregnant" 
+        <CardInformation
+          loading={loading}
+          variant="pregnant"
           title="Ibu Hamil KEK"
-          code="#" 
-          total={30}
-          newPregnant={20} 
-          oldPregant={10}
-        />
-        <CardInformation 
-          variant="pregnant" 
-          title="Ibu Hamil Sudah Diperiksa"
-          code="#" 
-          total={30}
-          newPregnant={20} 
-          oldPregant={10}
+          code="#"
+          total={data.totalPregnantKEK?.total}
+          newPregnant={data.totalPregnantKEK?.new}
+          oldPregant={data.totalPregnantKEK?.old}
         />
       </div>
     </Card>
