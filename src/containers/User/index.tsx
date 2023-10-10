@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Card, Input, Modal, Table, Typography, message } from 'antd';
-import { PrinterOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Card, Dropdown, Input, Modal, Table, Typography, message } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import FormUser from './FormUser';
 import useSWR from 'swr';
 import callApi, { swrCallApi } from '@/utils/network';
 import { AxiosRequestConfig } from 'axios';
+import FormResetPassword from './FormResetPassword';
+import { UilEditAlt, UilEllipsisH, UilKeySkeletonAlt } from '@iconscout/react-unicons';
 
 interface DataType {
   _id: string
@@ -18,6 +20,7 @@ interface DataType {
 
 const UserContainer = () => {
   const [addForm, setAddForm] = useState(false);
+  const [resetPassword, setResetPassword] = useState('');
   const { data = [], mutate, isLoading } = useSWR('/api/user/list', swrCallApi);
 
   const columns: ColumnsType<DataType> = [
@@ -36,6 +39,37 @@ const UserContainer = () => {
     {
       title: 'Role',
       dataIndex: 'role',
+    },
+    {
+      title: '',
+      dataIndex: 'action',
+      render: (_, record) => (
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: 'edit',
+                label: 'Ubah',
+                icon: <UilEditAlt size={16} />,
+                onClick: () => {
+
+                }
+              },
+              {
+                key: 'reset-password',
+                label: 'Reset Password',
+                icon: <UilKeySkeletonAlt size={16} />,
+                onClick: () => {
+                  setResetPassword(record.username);
+                }
+              },
+            ]
+          }}
+        >
+          <UilEllipsisH size={20} />
+        </Dropdown>
+      ),
+      width: 64
     },
   ];
 
@@ -58,6 +92,24 @@ const UserContainer = () => {
       }
     } catch (error) {
       message.error('Tambah data pengguna gagal!');
+    }
+  };
+
+  const onSubmitFormResetPassword = async (values: any) => {
+    try {
+      const options: AxiosRequestConfig = {
+        method: 'PUT',
+        url: '/api/user/reset-password',
+        data: { username: resetPassword, ...values },
+      };
+      const addToddler = await callApi(options);
+      if (addToddler) {
+        mutate();
+        setResetPassword('');
+        message.success('Reset password berhasil!');
+      }
+    } catch (error) {
+      message.error('Reset password gagal!');
     }
   };
 
@@ -89,6 +141,17 @@ const UserContainer = () => {
       >
         <FormUser
           onSubmit={onSubmitFormUser}
+        />
+      </Modal>
+      <Modal
+        title="Reset Password"
+        open={!!resetPassword}
+        footer={null}
+        onCancel={() => setResetPassword('')}
+        destroyOnClose
+      >
+        <FormResetPassword
+          onSubmit={onSubmitFormResetPassword}
         />
       </Modal>
     </div>

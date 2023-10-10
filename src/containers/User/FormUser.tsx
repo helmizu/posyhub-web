@@ -1,4 +1,3 @@
-import DatePickerBase from '@/components/DatePickerBase';
 import Field from '@/components/Field';
 import { ROLE } from '@/constants/data';
 import { swrCallApi } from '@/utils/network';
@@ -14,13 +13,15 @@ interface IValues {
   password: string
   name: string
   email: string
+  phone: string
   role: 'Admin' | 'Kader'
 }
 
 const schemaValidation = yup.object({
   name: yup.string().required('Nama imunisasi harus diisi!'),
   username: yup.string().required('Username harus diisi!'),
-  email: yup.string().email().required('Email harus diisi!'),
+  email: yup.string().email().optional(),
+  phone: yup.string().required('Nomor HP harus diisi!'),
   password: yup.string().required('Password harus diisi!'),
   role: yup.string().required('Role harus diisi!'),
 }).required();
@@ -37,6 +38,7 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit }) => {
       name: undefined,
       username: undefined,
       email: undefined,
+      phone: undefined,
       role: undefined,
       password: undefined,
     },
@@ -45,9 +47,11 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit }) => {
 
   const $username = watch('username');
   const $email = watch('email');
+  const $phone = watch('phone');
 
   const isDuplicatedUsername = !!$username && !!data?.find((item: IValues) => item.username === $username);
   const isDuplicatedEmail = !!$email && !!data?.find((item: IValues) => item.email === $email);
+  const isDuplicatedPhone = !!$phone && !!data?.find((item: IValues) => item.phone === $phone);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -59,7 +63,6 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit }) => {
             <Field label="Nama" error={fieldState.error?.message}>
               <Input {...field} placeholder="Kevin Mourel" />
             </Field>
-
           )}
         />
         <Controller
@@ -67,7 +70,16 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit }) => {
           name="email"
           render={({ field, fieldState }) => (
             <Field label="Email" error={isDuplicatedEmail ? 'Email telah terdaftar!' : fieldState.error?.message}>
-              <Input {...field} placeholder="user.admin@mail.com" />
+              <Input {...field} placeholder="user.admin@mail.com" type="email" />
+            </Field>
+          )}
+        />
+        <Controller
+          control={control}
+          name="email"
+          render={({ field, fieldState }) => (
+            <Field label="Nomor HP" error={isDuplicatedPhone ? 'Nomor HP telah terdaftar!' : fieldState.error?.message}>
+              <Input {...field} placeholder="0821XXXXXXXX" />
             </Field>
           )}
         />
@@ -102,7 +114,7 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit }) => {
           <Button
             type="primary"
             htmlType="submit"
-            disabled={(!isDuplicatedEmail || !isDuplicatedUsername) && formState.isValid}
+            disabled={(!isDuplicatedEmail || !isDuplicatedUsername || !isDuplicatedPhone) && formState.isValid}
             loading={formState.isLoading}
           >
             Simpan
