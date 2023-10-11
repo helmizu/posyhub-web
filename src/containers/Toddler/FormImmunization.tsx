@@ -3,7 +3,7 @@ import Field from '@/components/Field';
 import { IMMUNIZATION } from '@/constants/data';
 import { swrCallApi } from '@/utils/network';
 import { useYupValidationResolver } from '@/utils/yupResolver';
-import { Button, Checkbox, Input, Radio, Select } from 'antd';
+import { Button, Select } from 'antd';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import useSWR from 'swr';

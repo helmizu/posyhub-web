@@ -15,12 +15,14 @@ interface DataType {
   password: string
   name: string
   email: string
+  phone: string
   role: 'Admin' | 'Kader'
 }
 
 const UserContainer = () => {
   const [addForm, setAddForm] = useState(false);
   const [resetPassword, setResetPassword] = useState('');
+  const [editForm, setEditForm] = useState('');
   const { data = [], mutate, isLoading } = useSWR('/api/user/list', swrCallApi);
 
   const columns: ColumnsType<DataType> = [
@@ -33,8 +35,14 @@ const UserContainer = () => {
       dataIndex: 'username',
     },
     {
+      title: 'Nomor Hp',
+      dataIndex: 'phone',
+      render: (value) => value || '-',
+    },
+    {
       title: 'Email',
       dataIndex: 'email',
+      render: (value) => value || '-',
     },
     {
       title: 'Role',
@@ -52,7 +60,7 @@ const UserContainer = () => {
                 label: 'Ubah',
                 icon: <UilEditAlt size={16} />,
                 onClick: () => {
-
+                  setEditForm(record.username);
                 }
               },
               {
@@ -75,6 +83,7 @@ const UserContainer = () => {
 
   const onCloseModal = () => {
     setAddForm(false);
+    setEditForm('');
   };
 
   const onSubmitFormUser = async (values: any) => {
@@ -92,6 +101,24 @@ const UserContainer = () => {
       }
     } catch (error) {
       message.error('Tambah data pengguna gagal!');
+    }
+  };
+  
+  const onSubmitFormEditUser = async (values: any) => {
+    try {
+      const options: AxiosRequestConfig = {
+        method: 'POST',
+        url: '/api/user/edit',
+        data: values,
+      };
+      const editToddler = await callApi(options);
+      if (editToddler) {
+        mutate();
+        onCloseModal();
+        message.success('Ubah data pengguna berhasil!');
+      }
+    } catch (error) {
+      message.error('Ubah data pengguna gagal!');
     }
   };
 
@@ -141,6 +168,19 @@ const UserContainer = () => {
       >
         <FormUser
           onSubmit={onSubmitFormUser}
+        />
+      </Modal>
+      <Modal
+        title="Ubah Pengguna"
+        open={!!editForm}
+        footer={null}
+        onCancel={onCloseModal}
+        destroyOnClose
+      >
+        <FormUser
+          edit
+          onSubmit={onSubmitFormEditUser}
+          defaultValues={data?.find((item: DataType) => item.username === editForm)}
         />
       </Modal>
       <Modal

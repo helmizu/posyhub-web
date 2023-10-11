@@ -17,7 +17,9 @@ const MOCK_DATA = {
   'address': 'Jl. Raya Araya, Malang, Jawa Timur',
   'gender': 'Perempuan',
   'height': 0,
-  'weight': 0
+  'weight': 0,
+  'statusEconomy': 'Non Gakin',
+  'haveKMS': true,
 };
 
 const mapData = (value: typeof MOCK_DATA): DescriptionsItemType[] => {
@@ -66,6 +68,16 @@ const mapData = (value: typeof MOCK_DATA): DescriptionsItemType[] => {
       key: 'address',
       label: 'Alamat',
       children: value?.address
+    },
+    {
+      key: 'statusEconomy',
+      label: 'Status Ekonomi',
+      children: value?.statusEconomy
+    },
+    {
+      key: 'haveKMS',
+      label: 'Kartu Menuju Sehat',
+      children: value?.haveKMS ? 'Punya' : 'Tidak Punya'
     }
   ];
 };

@@ -13,6 +13,7 @@ import useSWR from 'swr';
 import callApi, {swrCallApi} from '@/utils/network';
 import {AxiosRequestConfig} from 'axios';
 import DetailChildBirth from '@/containers/Pregnant/DetailChildBirth';
+import { DOCUMENT_PREGNANT, TDocumentTemplate } from '@/types/document';
 
 interface DataType {
   _id: string
@@ -30,6 +31,7 @@ const PregnantContainer = () => {
   const { token: { colorTextSecondary } } = theme.useToken();
   const [formKey, setFormKey] = useState<'' | 'profile' | 'child-birth' | 'kb'>('');
   const [openDetail, setOpenDetail] = useState(false);
+  const [generating, setGenerating] = useState(false);
   const [nikFocus, setNikFocus] = useState('');
   const { data, mutate, isLoading } = useSWR('/api/pregnant/list', swrCallApi);
 
@@ -157,6 +159,34 @@ const PregnantContainer = () => {
     }
   };
 
+  const onGenerateDocument = async (type: TDocumentTemplate) => {
+    try {
+      setGenerating(true);
+      const options: AxiosRequestConfig = {
+        method: 'GET',
+        url: '/api/document/generate',
+        params: { type }
+      };
+      const generated = await callApi(options);
+      if (generated) {
+        message.success('Dokumen telah berhasil disimpan!');
+        let downloadLink = document.createElement('a');
+        downloadLink.href = generated?.url;
+        downloadLink.download = generated?.name || true;
+        downloadLink.target = '_blank';
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      }
+    } catch (error) {
+      console.log({ error });
+      message.error('Dokumen gagal disimpan!');
+    } finally {
+      setGenerating(false);
+    }
+  };
+
   return (
     <div style={{ display: 'flex', gap: 16, flexDirection: 'column' }}>
       <Typography.Title level={4}>Data Ibu Hamil</Typography.Title>
@@ -195,7 +225,17 @@ const PregnantContainer = () => {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Input.Search placeholder="Cari di sini..." />
-          <Button icon={<PrinterOutlined />}>Cetak</Button>
+          <Dropdown
+            trigger={['click']}
+            menu={{
+              items: DOCUMENT_PREGNANT.map(item => ({
+                onClick: () => onGenerateDocument(item.key),
+                ...item,
+              }))
+            }}
+          >
+            <Button icon={<PrinterOutlined />} loading={generating}>Cetak</Button>
+          </Dropdown>
         </div>
       </div>
       <Card bordered bodyStyle={{ padding: 0 }}>

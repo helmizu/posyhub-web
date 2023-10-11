@@ -14,7 +14,7 @@ import useSWR from 'swr';
 import callApi, { swrCallApi } from '@/utils/network';
 import { AxiosRequestConfig } from 'axios';
 import DetailToddler from './DetailToddler';
-import { TDocumentTemplate } from '@/types/document';
+import { DOCUMENT_TODDLER, TDocumentTemplate } from '@/types/document';
 
 interface DataType {
   _id: string
@@ -33,6 +33,7 @@ const ToddlerContainer = () => {
   const { token: { colorTextSecondary } } = theme.useToken();
   const [formKey, setFormKey] = useState<'' | 'profile' | 'checker' | 'diarrhea' | 'immunization'>('');
   const [openDetail, setOpenDetail] = useState(false);
+  const [generating, setGenerating] = useState(false);
   const [nikFocus, setNikFocus] = useState('');
   const { data = [], mutate, isLoading } = useSWR('/api/toddler/list', swrCallApi);
   const { data: { balitaTotal = 0, balitaThisMonth = 0, } = {}, isLoading: isLoadingStats } = useSWR('/api/toddler/stats', swrCallApi);
@@ -203,6 +204,7 @@ const ToddlerContainer = () => {
 
   const onGenerateDocument = async (type: TDocumentTemplate) => {
     try {
+      setGenerating(true);
       const options: AxiosRequestConfig = {
         method: 'GET',
         url: '/api/document/generate',
@@ -223,6 +225,8 @@ const ToddlerContainer = () => {
     } catch (error) {
       console.log({ error });
       message.error('Dokumen gagal disimpan!');
+    } finally {
+      setGenerating(false);
     }
   };
 
@@ -265,7 +269,17 @@ const ToddlerContainer = () => {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Input.Search placeholder="Cari di sini..." />
-          <Button icon={<PrinterOutlined />} onClick={() => onGenerateDocument('balita')}>Cetak</Button>
+          <Dropdown
+            trigger={['click']}
+            menu={{
+              items: DOCUMENT_TODDLER.map(item => ({
+                onClick: () => onGenerateDocument(item.key),
+                ...item,
+              }))
+            }}
+          >
+            <Button icon={<PrinterOutlined />} loading={generating}>Cetak</Button>
+          </Dropdown>
         </div>
       </div>
       <Card bordered bodyStyle={{ padding: 0 }}>

@@ -16,6 +16,8 @@ interface IValues {
   birthHeight: number
   address: string
   gender: string
+  haveKMS: boolean
+  economyStatus: string
 }
 
 const schemaValidation = yup.object({
@@ -28,6 +30,8 @@ const schemaValidation = yup.object({
   birthHeight: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Tinggi badan lahir harus diisi!'),
   address: yup.string().required('Alamat harus diisi!'),
   gender: yup.string().required('Jenis kelamin harus diisi!'),
+  haveKMS: yup.bool().required('Status kartu menuju sehat harus diisi!'),
+  economyStatus: yup.string().required('Status ekonomi harus diisi!'),
 }).required();
 
 interface FormToddlerProps {
@@ -48,6 +52,8 @@ const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit, defaultValues }) =>
       birthHeight: defaultValues?.birthHeight,
       address: defaultValues?.address,
       gender: defaultValues?.gender,
+      haveKMS: defaultValues?.haveKMS,
+      economyStatus: defaultValues?.economyStatus,
     },
     resolver
   });
@@ -156,6 +162,30 @@ const FormToddler: React.FC<FormToddlerProps> = ({ onSubmit, defaultValues }) =>
               <Radio.Group {...field}>
                 <Radio value="Perempuan">Perempuan</Radio>
                 <Radio value="Laki - laki">Laki - laki</Radio>
+              </Radio.Group>
+            </Field>
+          )}
+        />
+        <Controller
+          control={control}
+          name="economyStatus"
+          render={({ field, fieldState }) => (
+            <Field label="Status Ekonomi" error={fieldState.error?.message}>
+              <Radio.Group {...field}>
+                <Radio value="Gakin">Gakin</Radio>
+                <Radio value="Non Gakin">Non Gakin</Radio>
+              </Radio.Group>
+            </Field>
+          )}
+        />
+        <Controller
+          control={control}
+          name="haveKMS"
+          render={({ field, fieldState }) => (
+            <Field label="Apakah punya kartu menuju sehat (KMS)?" error={fieldState.error?.message}>
+              <Radio.Group {...field}>
+                <Radio value={true}>Punya</Radio>
+                <Radio value={false}>Tidak Punya</Radio>
               </Radio.Group>
             </Field>
           )}
