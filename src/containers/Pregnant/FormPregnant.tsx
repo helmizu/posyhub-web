@@ -34,6 +34,7 @@ const schemaValidation = yup.object({
   phoneNumber: yup.string().required('Nomor HP / WA harus diisi!'),
   economyStatus: yup.string().required('Status ekonomi harus diisi!'),
   pregnancyNumber: yup.string().required('Jumlah hamil harus diisi!'),
+  husbandName: yup.string().required('Nama suami harus diisi!'),
   youngestChildAge: yup.string().required('Umur anak terakhir harus diisi!'),
   lastPeriod: yup.string().required('Haid terakhir harus diisi!'),
   estimatedBirth: yup.string().required('Perkiraan persalinan harus diisi!'),
@@ -59,6 +60,7 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit, defaultValues }) 
       name: defaultValues?.name,
       birthDate: defaultValues?.birthDate,
       address: defaultValues?.address,
+      husbandName: defaultValues?.husbandName,
       phoneNumber: defaultValues?.phoneNumber,
       economyStatus: defaultValues?.economyStatus,
       pregnancyNumber: defaultValues?.pregnancyNumber,
@@ -94,7 +96,16 @@ const FormPregnant: React.FC<FormPregnantProps> = ({ onSubmit, defaultValues }) 
           name="name"
           render={({ field, fieldState }) => (
             <Field label="Nama" error={fieldState.error?.message}>
-              <Input {...field} placeholder="Kevin Mourel" />
+              <Input {...field} placeholder="Pratiwi" />
+            </Field>
+          )}
+        />
+        <Controller
+          control={control}
+          name="husbandName"
+          render={({ field, fieldState }) => (
+            <Field label="Nama Suami" error={fieldState.error?.message}>
+              <Input {...field} placeholder="Joko" />
             </Field>
           )}
         />
