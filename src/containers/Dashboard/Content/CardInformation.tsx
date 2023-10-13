@@ -49,13 +49,13 @@ const CardInformation: React.FC<IProps> = ({ title, code, total, male, female, v
         <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginTop: 24 }}>
           <Card.Meta
             style={{ flex: 1 }}
-            title={<Typography.Title level={5} style={{ color: '#AD4053' }}>{infant}</Typography.Title>}
+            title={<Typography.Title level={5} style={{ color: '#C32541' }}>{infant}</Typography.Title>}
             description={<Typography.Text type="secondary">0 - 24 Bln</Typography.Text>}
           />
           <Divider type='vertical' style={{ height: 48 }} />
           <Card.Meta
             style={{ flex: 1 }}
-            title={<Typography.Title level={5} style={{ color: '#AD4053' }}>{toddler}</Typography.Title>}
+            title={<Typography.Title level={5} style={{ color: '#C32541' }}>{toddler}</Typography.Title>}
             description={<Typography.Text type="secondary">25 - 60 Bln</Typography.Text>}
           />
         </div>

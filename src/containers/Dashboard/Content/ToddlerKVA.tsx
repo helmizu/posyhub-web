@@ -7,7 +7,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
   return (
     <Card title="Penanggulangan KVA">
       <Row gutter={[16, 16]}>
-        <Col lg={6} md={12} sm={12} xs={24}>
+        {/* <Col lg={6} md={12} sm={12} xs={24}>
           <CardInformation
             loading={loading}
             variant="toddler"
@@ -32,10 +32,10 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
             infant={20}
             toddler={10}
           />
-        </Col>
-        <Col lg={12} md={24} sm={24} xs={24}>
+        </Col> */}
+        <Col lg={24} md={24} sm={24} xs={24}>
           <Row gutter={[16, 16]}>
-            <Col lg={12} md={12} sm={12} xs={24}>
+            <Col lg={6} md={12} sm={12} xs={24}>
               <CardInformation
                 loading={loading}
                 type="compact"
@@ -46,7 +46,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                 female={data.totalBalita6MonthAge?.female}
               />
             </Col>
-            <Col lg={12} md={12} sm={12} xs={24}>
+            <Col lg={6} md={12} sm={12} xs={24}>
               <CardInformation
                 loading={loading}
                 type="compact"
@@ -57,7 +57,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                 female={data.totalBalitaUntil6MonthAge?.female}
               />
             </Col>
-            <Col lg={12} md={12} sm={12} xs={24}>
+            <Col lg={6} md={12} sm={12} xs={24}>
               <CardInformation
                 loading={loading}
                 type="compact"
@@ -68,7 +68,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                 female={data?.totalBalitaAttend6MonthAge?.female}
               />
             </Col>
-            <Col lg={12} md={12} sm={12} xs={24}>
+            <Col lg={6} md={12} sm={12} xs={24}>
               <CardInformation
                 loading={loading}
                 type="compact"

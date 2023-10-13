@@ -74,8 +74,9 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
       </Head>
       <AntLayout>
         <Sider style={{ backgroundColor: colorWhite, height: '100vh' }} collapsed={collapsed}>
-          <div style={{ paddingInline: 24, paddingBlock: 16, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%', gap: 8 }}>
-            <Typography.Title level={3}>{collapsed ? 'Ph' : 'Posyhub'}</Typography.Title>
+          <div style={{ paddingInline: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%', gap: 8, height: 64 }}>
+            <Avatar size={40} src="/logo-circle.png" style={{ backgroundColor: colorPrimary, minWidth: 40, minHeight: 40 }} />
+            {!collapsed && (<Typography.Title level={3}>{collapsed ? 'Ph' : 'Posyhub'}</Typography.Title>)}
           </div>
           <Menu
             style={{ backgroundColor: colorWhite }}
