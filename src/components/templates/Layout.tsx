@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -66,6 +66,18 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
 
   const { xs, sm, md } = Grid.useBreakpoint();
   const collapsed = xs || (sm && !md);
+  const [showTitle, setShowTitle] = useState(!collapsed);
+
+  useEffect(() => {
+    if (!collapsed) {
+      setTimeout(() => {
+        setShowTitle(true);
+      }, 300);
+    } else {
+      setShowTitle(false);
+    }
+  }, [collapsed]);
+
 
   return (
     <>
@@ -73,10 +85,12 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
         <title>Posyhub | {title || ''}</title>
       </Head>
       <AntLayout>
-        <Sider style={{ backgroundColor: colorWhite, height: '100vh' }} collapsed={collapsed}>
-          <div style={{ paddingInline: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%', gap: 8, height: 64 }}>
+        <Sider style={{ backgroundColor: colorWhite, height: '100vh', transition: 'all 0.3s ease-in-out' }} collapsed={collapsed}>
+          <div style={{ paddingInline: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%', gap: 8, height: 64, transition: 'all', transitionTimingFunction: 'ease-in-out', transitionDuration: '0.5s' }}>
             <Avatar size={40} src="/logo-circle.png" style={{ backgroundColor: colorPrimary, minWidth: 40, minHeight: 40 }} />
-            {!collapsed && (<Typography.Title level={3}>{collapsed ? 'Ph' : 'Posyhub'}</Typography.Title>)}
+            {!collapsed && (
+              <Typography.Title level={3} style={{ opacity: showTitle ? 1 : 0, transition: 'all', transitionTimingFunction: 'ease-in-out', transitionDuration: '0.5s' }}>Posyhub</Typography.Title>
+            )}
           </div>
           <Menu
             style={{ backgroundColor: colorWhite }}
