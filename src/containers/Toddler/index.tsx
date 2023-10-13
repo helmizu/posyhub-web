@@ -37,7 +37,7 @@ const ToddlerContainer = () => {
   const [nikFocus, setNikFocus] = useState('');
   const [search, setSearch] = useState('');
   const { data = [], mutate, isLoading } = useSWR(['/api/toddler/list', { search }], ([url, params]) => swrCallApi(url, { params }));
-  const { data: { balitaTotal = 0, balitaThisMonth = 0, } = {}, isLoading: isLoadingStats } = useSWR('/api/toddler/stats', swrCallApi);
+  const { data: { balitaTotal = 0, balitaThisMonth = 0, balitaInMonitoring = 0, } = {}, isLoading: isLoadingStats } = useSWR('/api/toddler/stats', swrCallApi);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -254,8 +254,8 @@ const ToddlerContainer = () => {
           <Card bordered style={{ flex: 1, height: '100%' }} bodyStyle={{ padding: 16 }}>
             <Typography.Text style={{ color: colorTextSecondary }}>Balita Dalam Pantauan</Typography.Text>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography.Title level={5}>0</Typography.Title>
-              <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
+              <Typography.Title level={5}>{balitaInMonitoring}</Typography.Title>
+              <Badge count={`${toPercentage(balitaInMonitoring * 100 / balitaTotal)}%`} color="#697077" />
             </div>
           </Card>
         </Col>
