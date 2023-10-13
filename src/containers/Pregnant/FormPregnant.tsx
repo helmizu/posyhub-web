@@ -17,6 +17,7 @@ interface IValues {
   youngestChildAge: number
   lastPeriod: string
   estimatedBirth: string
+  husbandName: string
   weight: number
   height: number
   bloodPressure: number
