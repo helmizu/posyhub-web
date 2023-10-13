@@ -12,7 +12,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     const requestConfig: AxiosRequestConfig = {
       method: 'POST',
       baseURL: process.env.API_BASE_URL,
-      url: '/diarrhea-check',
+      url: '/diarrhea',
       data: request.body,
       headers: {
         Authorization: `Bearer ${accessToken || ''}`

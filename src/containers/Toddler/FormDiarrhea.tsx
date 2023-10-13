@@ -81,7 +81,7 @@ const FormDiarrhea: React.FC<FormDiarrheaProps> = ({ onSubmit }) => {
           control={control}
           name="checkLocation"
           render={({ field, fieldState }) => (
-            <Field label="" error={fieldState.error?.message}>
+            <Field label="Lokasi Pengecekan" error={fieldState.error?.message}>
               <>
                 <Radio.Group {...field}>
                   <Radio value="PUSK">PUSK</Radio>
