@@ -35,7 +35,8 @@ const ToddlerContainer = () => {
   const [openDetail, setOpenDetail] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [nikFocus, setNikFocus] = useState('');
-  const { data = [], mutate, isLoading } = useSWR('/api/toddler/list', swrCallApi);
+  const [search, setSearch] = useState('');
+  const { data = [], mutate, isLoading } = useSWR(['/api/toddler/list', { search }], ([url, params]) => swrCallApi(url, { params }));
   const { data: { balitaTotal = 0, balitaThisMonth = 0, } = {}, isLoading: isLoadingStats } = useSWR('/api/toddler/stats', swrCallApi);
 
   const columns: ColumnsType<DataType> = [
@@ -268,7 +269,7 @@ const ToddlerContainer = () => {
           <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('immunization')}>Imunisasi</Button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <Input.Search placeholder="Cari di sini..." />
+          <Input.Search placeholder="Cari di sini..." onChange={(e) => setSearch(e.target.value)} />
           <Dropdown
             trigger={['click']}
             menu={{

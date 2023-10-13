@@ -38,7 +38,7 @@ const CardInformation: React.FC<IProps> = ({ title, code, total, male, female, v
           avatar={!isHighlight && (<Avatar shape="square" size={isCompact ? 48 : 60}>{code}</Avatar>)}
           title={<Typography.Title level={(isCompact || isHighlight) ? 5 : 4} type="success">{total}</Typography.Title>}
           description={!!(male !== undefined || female !== undefined) && (
-            <Space align="center" size="middle">
+            <Space align="center" size="small">
               {male !== undefined && (<Typography.Text type="secondary" style={{ fontWeight: 400 }}>L: {male}</Typography.Text>)}
               {female !== undefined && (<Typography.Text type="secondary" style={{ fontWeight: 400 }}>P: {female}</Typography.Text>)}
             </Space>

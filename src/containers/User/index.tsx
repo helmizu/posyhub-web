@@ -106,6 +106,7 @@ const UserContainer = () => {
   
   const onSubmitFormEditUser = async (values: any) => {
     try {
+      if (values.password) delete values.password;
       const options: AxiosRequestConfig = {
         method: 'POST',
         url: '/api/user/edit',

@@ -7,7 +7,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
   return (
     <Card title="Penanggulangan KVA">
       <Row gutter={[16, 16]}>
-        <Col span={6}>
+        <Col lg={6} md={12} sm={12} xs={24}>
           <CardInformation
             loading={loading}
             variant="toddler"
@@ -20,7 +20,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
             toddler={10}
           />
         </Col>
-        <Col span={6}>
+        <Col lg={6} md={12} sm={12} xs={24}>
           <CardInformation
             loading={loading}
             variant="toddler"
@@ -33,9 +33,9 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
             toddler={10}
           />
         </Col>
-        <Col span={12}>
+        <Col lg={12} md={24} sm={24} xs={24}>
           <Row gutter={[16, 16]}>
-            <Col span={12}>
+            <Col lg={12} md={12} sm={12} xs={24}>
               <CardInformation
                 loading={loading}
                 type="compact"
@@ -46,7 +46,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                 female={data.totalBalita6MonthAge?.female}
               />
             </Col>
-            <Col span={12}>
+            <Col lg={12} md={12} sm={12} xs={24}>
               <CardInformation
                 loading={loading}
                 type="compact"
@@ -57,7 +57,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                 female={data.totalBalitaUntil6MonthAge?.female}
               />
             </Col>
-            <Col span={12}>
+            <Col lg={12} md={12} sm={12} xs={24}>
               <CardInformation
                 loading={loading}
                 type="compact"
@@ -68,7 +68,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                 female={data?.totalBalitaAttend6MonthAge?.female}
               />
             </Col>
-            <Col span={12}>
+            <Col lg={12} md={12} sm={12} xs={24}>
               <CardInformation
                 loading={loading}
                 type="compact"
@@ -81,10 +81,10 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
             </Col>
           </Row>
         </Col>
-        <Col span={12}>
+        <Col lg={12} md={12} sm={24} xs={24}>
           <Card title="Balita yang diberi ASI saja (ASI Eksklusif)">
             <Row gutter={[16, 16]}>
-              <Col span={8}>
+              <Col lg={8} md={12} sm={8} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -94,7 +94,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita0MonthASI?.female}
                 />
               </Col>
-              <Col span={8}>
+              <Col lg={8} md={12} sm={8} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -104,7 +104,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita1MonthASI?.female}
                 />
               </Col>
-              <Col span={8}>
+              <Col lg={8} md={12} sm={8} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -114,7 +114,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita2MonthASI?.female}
                 />
               </Col>
-              <Col span={6}>
+              <Col lg={6} md={12} sm={6} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -124,7 +124,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita3MonthASI?.female}
                 />
               </Col>
-              <Col span={6}>
+              <Col lg={6} md={12} sm={6} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -134,17 +134,17 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita4MonthASI?.female}
                 />
               </Col>
-              <Col span={6}>
+              <Col lg={6} md={12} sm={6} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
-                  title="Umur 5" 
+                  title="Umur 5"
                   total={data?.totalBalita5MonthASI?.total}
                   male={data?.totalBalita5MonthASI?.male}
                   female={data?.totalBalita5MonthASI?.female}
                 />
               </Col>
-              <Col span={6}>
+              <Col lg={6} md={24} sm={6} xs={24}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -157,10 +157,10 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
             </Row>
           </Card>
         </Col>
-        <Col span={12}>
+        <Col lg={12} md={12} sm={24} xs={24}>
           <Card title="Balita yang diberi makanan selain ASI">
             <Row gutter={[16, 16]}>
-              <Col span={8}>
+              <Col lg={8} md={12} sm={8} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -170,7 +170,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita0MonthASINotEx?.female}
                 />
               </Col>
-              <Col span={8}>
+              <Col lg={8} md={12} sm={8} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -180,7 +180,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita1MonthASINotEx?.female}
                 />
               </Col>
-              <Col span={8}>
+              <Col lg={8} md={12} sm={8} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -190,7 +190,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita2MonthASINotEx?.female}
                 />
               </Col>
-              <Col span={6}>
+              <Col lg={6} md={12} sm={6} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -200,7 +200,7 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita3MonthASINotEx?.female}
                 />
               </Col>
-              <Col span={6}>
+              <Col lg={6} md={12} sm={6} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
@@ -210,17 +210,17 @@ const ToddlerKVAContent: React.FC<{ data: IData; loading?: boolean }> = ({ data,
                   female={data?.totalBalita4MonthASINotEx?.female}
                 />
               </Col>
-              <Col span={6}>
+              <Col lg={6} md={12} sm={6} xs={12}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
-                  title="Umur 5" 
+                  title="Umur 5"
                   total={data?.totalBalita5MonthASINotEx?.total}
                   male={data?.totalBalita5MonthASINotEx?.male}
                   female={data?.totalBalita5MonthASINotEx?.female}
                 />
               </Col>
-              <Col span={6}>
+              <Col lg={6} md={24} sm={6} xs={24}>
                 <CardInformation
                   loading={loading}
                   type="highlight"
