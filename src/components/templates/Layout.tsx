@@ -88,10 +88,10 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
           <Header style={{ background: colorWhite, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingInline: 24, height: 64 }}>
             {!!user && (
               <div style={{ display: 'flex', gap: 8, alignItems: 'center', }}>
-                <Avatar size="large" style={{ backgroundColor: colorPrimary }}>{profile.name?.split(' ')?.map((item: string) => item?.at(0) || '')?.slice(0, 2)?.join('') || '?'}</Avatar>
+                <Avatar size="large" style={{ backgroundColor: colorPrimary }}>{profile?.name?.split(' ')?.map((item: string) => item?.at(0) || '')?.slice(0, 2)?.join('') || '?'}</Avatar>
                 <div style={{ display: 'flex', flexDirection: 'column', minWidth: 80 }}>
-                  <Typography.Text strong>{profile.name}</Typography.Text>
-                  <Typography.Text style={{ color: colorTextSecondary, fontSize: 14 }}>{profile.role || 'Admin'}</Typography.Text>
+                  <Typography.Text strong>{profile?.name || ''}</Typography.Text>
+                  <Typography.Text style={{ color: colorTextSecondary, fontSize: 14 }}>{profile?.role || 'Admin'}</Typography.Text>
                 </div>
                 <Dropdown trigger={['click']} menu={{ items: MENU_ITEMS, style: { width: 160 } }}>
                   <Button type="text" icon={<UilAngleDown />} style={{ borderRadius: '50%' }} />
