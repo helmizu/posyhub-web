@@ -152,7 +152,7 @@ const FormKB: React.FC<FormKBProps> = ({ onSubmit }) => {
             <Field label="Drop Out (Opsional)" error={fieldState.error?.message}>
               <Radio.Group {...field}>
                 <Radio value="Hamil">Hamil</Radio>
-                <Radio value="Menopouse">Menopouse</Radio>
+                <Radio value="Menopause">Menopouse</Radio>
               </Radio.Group>
             </Field>
           )}

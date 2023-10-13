@@ -87,8 +87,8 @@ const FormChildBirth: React.FC<FormPersalinanProps> = ({ onSubmit}) => {
             <Field label="Jenis Persalinann" error={fieldState.error?.message}>
               <Radio.Group {...field}>
                 <Radio value="Normal">Normal</Radio>
-                <Radio value="SC / Operasi">SC / Operasi</Radio>
-                <Radio value="Tindakan /  Vacum">Tindakan /  Vacum</Radio>
+                <Radio value="Operasi">SC / Operasi</Radio>
+                <Radio value="Vakum">Tindakan /  Vacum</Radio>
               </Radio.Group>
             </Field>
           )}
