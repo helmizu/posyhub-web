@@ -12,6 +12,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
     <>
       <Head>
         <title>Posyhub</title>
+        <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <SessionProvider session={session} refetchInterval={0}>
         <ConfigProvider theme={theme}>
