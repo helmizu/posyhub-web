@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Badge, Button, Card, Dropdown, Input, Modal, Table, Typography, message, theme } from 'antd';
+import { Badge, Button, Card, Col, Dropdown, Input, Modal, Row, Table, Typography, message, theme } from 'antd';
 import { PlusOutlined, PrinterOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import Column from '@/components/Column';
@@ -234,35 +234,34 @@ const ToddlerContainer = () => {
   return (
     <div style={{ display: 'flex', gap: 16, flexDirection: 'column' }}>
       <Typography.Title level={4}>Data Balita</Typography.Title>
-      <div style={{ display: 'flex', gap: 16 }}>
-        <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
-          <Typography.Text style={{ color: colorTextSecondary }}>Total Balita</Typography.Text>
-          <Typography.Title level={5}>{balitaTotal}</Typography.Title>
-        </Card>
-        <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
-          <Typography.Text style={{ color: colorTextSecondary }}>Balita Hadir {formatDate(new Date(), 'MMMM YYYY')}</Typography.Text>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>{balitaThisMonth}</Typography.Title>
-            <Badge count={`${toPercentage(balitaThisMonth * 100 / balitaTotal)}%`} color="#697077" />
-          </div>
-        </Card>
-        <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
-          <Typography.Text style={{ color: colorTextSecondary }}>Balita Dalam Pantauan</Typography.Text>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>0</Typography.Title>
-            <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
-          </div>
-        </Card>
-        <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
-          <Typography.Text style={{ color: colorTextSecondary }}>-</Typography.Text>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>-</Typography.Title>
-            <Badge count={'-%'} color="#697077" />
-          </div>
-        </Card>
-      </div>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} sm={8} md={8} lg={6}>
+          <Card bordered style={{ flex: 1, height: '100%' }} bodyStyle={{ padding: 16 }}>
+            <Typography.Text style={{ color: colorTextSecondary }}>Total Balita</Typography.Text>
+            <Typography.Title level={5}>{balitaTotal}</Typography.Title>
+          </Card>
+        </Col>
+        <Col xs={24} sm={8} md={8} lg={6}>
+          <Card bordered style={{ flex: 1, height: '100%' }} bodyStyle={{ padding: 16 }}>
+            <Typography.Text style={{ color: colorTextSecondary }}>Balita Hadir {formatDate(new Date(), 'MMMM YYYY')}</Typography.Text>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography.Title level={5}>{balitaThisMonth}</Typography.Title>
+              <Badge count={`${toPercentage(balitaThisMonth * 100 / balitaTotal)}%`} color="#697077" />
+            </div>
+          </Card>
+        </Col>
+        <Col xs={24} sm={8} md={8} lg={6}>
+          <Card bordered style={{ flex: 1, height: '100%' }} bodyStyle={{ padding: 16 }}>
+            <Typography.Text style={{ color: colorTextSecondary }}>Balita Dalam Pantauan</Typography.Text>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography.Title level={5}>0</Typography.Title>
+              <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
+            </div>
+          </Card>
+        </Col>
+      </Row>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, auto)', alignItems: 'center', gap: 16 }}>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('profile')}>Balita</Button>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('checker')}>Hasil Pengecekan</Button>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('diarrhea')}>Laporan Diare</Button>

@@ -19,6 +19,7 @@ interface IValues {
   headCircumference: number
   upperArmCircumference: number
   pmt: boolean
+  exclusiveMilk: boolean
 }
 
 const schemaValidation = yup.object({
@@ -28,7 +29,7 @@ const schemaValidation = yup.object({
   height: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Tinggi badan harus diisi!'),
   headCircumference: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Lingkar kepala (headCircumference) harus diisi!'),
   upperArmCircumference: yup.number().transform(val => Number.isNaN(+val) ? undefined : val).required('Lingkar lengan atas (upperArmCircumference) harus diisi!'),
-  pmt: yup.boolean(),
+  exclusiveMilk : yup.boolean(),
 }).required();
 
 interface FormCheckerProps {
@@ -75,6 +76,11 @@ const mapDescriptions = (value: IValues): DescriptionsItemType[] => {
       label: 'PMT',
       children: `${value?.pmt ? 'Iya' : 'Tidak'}`
     },
+    {
+      key: 'exclusiveMilk',
+      label: 'ASI Eksklusif',
+      children: `${value?.pmt ? 'Iya' : 'Tidak'}`
+    },
   ];
 };
 
@@ -90,6 +96,7 @@ const FormChecker: React.FC<FormCheckerProps> = ({ onSubmit, onUpdate }) => {
       headCircumference: undefined,
       upperArmCircumference: undefined,
       pmt: false,
+      exclusiveMilk: false,
     },
     resolver
   });
@@ -228,6 +235,20 @@ const FormChecker: React.FC<FormCheckerProps> = ({ onSubmit, onUpdate }) => {
                   onChange={(e) => field.onChange(e.target.checked)}
                 >
                   Pemberian Makanan Tambahan (PMT)
+                </Checkbox>
+              </Field>
+            )}
+          />
+          <Controller
+            control={control}
+            name="exclusiveMilk"
+            render={({ field, fieldState }) => (
+              <Field label="" error={fieldState.error?.message}>
+                <Checkbox
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.target.checked)}
+                >
+                  ASI Eksklusif
                 </Checkbox>
               </Field>
             )}
