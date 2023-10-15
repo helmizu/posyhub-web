@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Badge, Button, Card, Dropdown, Input, Modal, Table, Typography, theme, message} from 'antd';
+import { Badge, Button, Card, Dropdown, Input, Modal, Table, Typography, theme, message } from 'antd';
 import { PlusOutlined, PrinterOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import Column from '@/components/Column';
@@ -10,8 +10,8 @@ import FormPregnant from './FormPregnant';
 import FormKB from '@/containers/Pregnant/FormKB';
 import FormChildBirth from '@/containers/Pregnant/FormChildBirth';
 import useSWR from 'swr';
-import callApi, {swrCallApi} from '@/utils/network';
-import {AxiosRequestConfig} from 'axios';
+import callApi, { swrCallApi } from '@/utils/network';
+import { AxiosRequestConfig } from 'axios';
 import DetailChildBirth from '@/containers/Pregnant/DetailChildBirth';
 import { DOCUMENT_PREGNANT, TDocumentTemplate } from '@/types/document';
 
@@ -34,6 +34,8 @@ const PregnantContainer = () => {
   const [generating, setGenerating] = useState(false);
   const [nikFocus, setNikFocus] = useState('');
   const { data, mutate, isLoading } = useSWR('/api/pregnant/list', swrCallApi);
+  const { data: profile = {} } = useSWR('/api/user/profile', swrCallApi);
+  const isKader = profile?.role?.toLowerCase() === 'kader';
 
   const columns: ColumnsType<DataType> = [
     {
@@ -193,49 +195,55 @@ const PregnantContainer = () => {
       <div style={{ display: 'flex', gap: 16 }}>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Total Ibu Hamil</Typography.Text>
-          <Typography.Title level={5}>100</Typography.Title>
+          <Typography.Title level={5}>0</Typography.Title>
         </Card>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Ibu Hamil Hadir {formatDate(new Date(), 'MMMM YYYY')}</Typography.Text>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>70</Typography.Title>
-            <Badge count={`${toPercentage(70 * 100 / 100)}%`} color="#697077" />
+            <Typography.Title level={5}>0</Typography.Title>
+            <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
           </div>
         </Card>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Ibu Hamil KEK</Typography.Text>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>5</Typography.Title>
-            <Badge count={`${toPercentage(5 * 100 / 100)}%`} color="#697077" />
+            <Typography.Title level={5}>0</Typography.Title>
+            <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
           </div>
         </Card>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Belum Melahirkan</Typography.Text>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>30</Typography.Title>
-            <Badge count={`${toPercentage(30 * 100 / 100)}%`} color="#697077" />
+            <Typography.Title level={5}>0</Typography.Title>
+            <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
           </div>
         </Card>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('profile')}>Ibu Hamil</Button>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('child-birth')}>Persalinan</Button>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('kb')}>KB</Button>
+          {isKader && (
+            <>
+              <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('profile')}>Ibu Hamil</Button>
+              <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('child-birth')}>Persalinan</Button>
+              <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('kb')}>KB</Button>
+            </>
+          )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Input.Search placeholder="Cari di sini..." />
-          <Dropdown
-            trigger={['click']}
-            menu={{
-              items: DOCUMENT_PREGNANT.map(item => ({
-                onClick: () => onGenerateDocument(item.key),
-                ...item,
-              }))
-            }}
-          >
-            <Button icon={<PrinterOutlined />} loading={generating}>Cetak</Button>
-          </Dropdown>
+          {isKader && (
+            <Dropdown
+              trigger={['click']}
+              menu={{
+                items: DOCUMENT_PREGNANT.map(item => ({
+                  onClick: () => onGenerateDocument(item.key),
+                  ...item,
+                }))
+              }}
+            >
+              <Button icon={<PrinterOutlined />} loading={generating}>Cetak</Button>
+            </Dropdown>
+          )}
         </div>
       </div>
       <Card bordered bodyStyle={{ padding: 0 }}>

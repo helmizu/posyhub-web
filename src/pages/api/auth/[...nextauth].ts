@@ -50,6 +50,9 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  session: {
+    maxAge: 5 * 60 * 60,
+  },
   secret: process.env.JWT_SECRET || 'secret',
   pages: {
     signIn: '/login',

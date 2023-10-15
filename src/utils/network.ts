@@ -34,8 +34,7 @@ export const callApi = async (config: AxiosRequestConfig, withCancel?: boolean) 
 
 export const swrCallApi = async (url: string, options: AxiosRequestConfig) => {
   try {
-    const { data, status } = await axios.get(url, options);
-    console.log({ data, status });
+    const { data } = await axios.get(url, options);
     return data;
   } catch (error: any) {
     const statusCode = error.response.data?.status || error?.response?.code;

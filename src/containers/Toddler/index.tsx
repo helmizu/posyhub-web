@@ -38,6 +38,8 @@ const ToddlerContainer = () => {
   const [search, setSearch] = useState('');
   const { data = [], mutate, isLoading } = useSWR(['/api/toddler/list', { search }], ([url, params]) => swrCallApi(url, { params }));
   const { data: { balitaTotal = 0, balitaThisMonth = 0, balitaInMonitoring = 0, } = {}, isLoading: isLoadingStats } = useSWR('/api/toddler/stats', swrCallApi);
+  const { data: profile = {} } = useSWR('/api/user/profile', swrCallApi);
+  const isKader = profile?.role?.toLowerCase() === 'kader';
 
   const columns: ColumnsType<DataType> = [
     {
@@ -184,7 +186,6 @@ const ToddlerContainer = () => {
     }
   };
 
-
   const onSubmitFormImmunization = async (values: any) => {
     try {
       const options: AxiosRequestConfig = {
@@ -262,24 +263,30 @@ const ToddlerContainer = () => {
       </Row>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'space-between' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, auto)', alignItems: 'center', gap: 16 }}>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('profile')}>Balita</Button>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('checker')}>Hasil Pengecekan</Button>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('diarrhea')}>Laporan Diare</Button>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('immunization')}>Imunisasi</Button>
+          {isKader && (
+            <>
+              <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('profile')}>Balita</Button>
+              <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('checker')}>Hasil Pengecekan</Button>
+              <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('diarrhea')}>Laporan Diare</Button>
+              <Button type="primary" icon={<PlusOutlined />} onClick={() => setFormKey('immunization')}>Imunisasi</Button>
+            </>
+          )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <Input.Search placeholder="Cari di sini..." onChange={(e) => setSearch(e.target.value)} />
-          <Dropdown
-            trigger={['click']}
-            menu={{
-              items: DOCUMENT_TODDLER.map(item => ({
-                onClick: () => onGenerateDocument(item.key),
-                ...item,
-              }))
-            }}
-          >
-            <Button icon={<PrinterOutlined />} loading={generating}>Cetak</Button>
-          </Dropdown>
+          {isKader && (
+            <Dropdown
+              trigger={['click']}
+              menu={{
+                items: DOCUMENT_TODDLER.map(item => ({
+                  onClick: () => onGenerateDocument(item.key),
+                  ...item,
+                }))
+              }}
+            >
+              <Button icon={<PrinterOutlined />} loading={generating}>Cetak</Button>
+            </Dropdown>
+          )}
         </div>
       </div>
       <Card bordered bodyStyle={{ padding: 0 }}>

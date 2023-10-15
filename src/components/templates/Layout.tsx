@@ -9,6 +9,7 @@ import { UilAngleDown, UilSignout } from '@iconscout/react-unicons';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { swrCallApi } from '@/utils/network';
+import dayjs from 'dayjs';
 
 const { Header, Sider, Content } = AntLayout;
 
@@ -78,6 +79,12 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
     }
   }, [collapsed]);
 
+  useEffect(() => {
+    if (user?.expires) {
+      const isExpired = dayjs(user.expires).diff() < 0;
+      if (isExpired) router.push('/logout');
+    }
+  }, [user?.expires]);
 
   return (
     <>

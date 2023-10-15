@@ -1,5 +1,5 @@
 export type TDocumentToddlerTemplate = 'balita' | 'ddtk' | 'diare' | 'imunisasi';
-export type TDocumentPregantTemplate = 'bulananKB' | 'pregnant' | 'rekapKB';
+export type TDocumentPregantTemplate = 'bulananKB' | 'pregnant' | 'pregnantKEK' | 'rekapKB';
 export type TDocumentTemplate = 'dashboard' | TDocumentToddlerTemplate | TDocumentPregantTemplate;
 
 export const DOCUMENT_TODDLER: { key: TDocumentToddlerTemplate; label: string }[] = [
@@ -29,6 +29,10 @@ export const DOCUMENT_PREGNANT: { key: TDocumentPregantTemplate; label: string }
   {
     key: 'pregnant',
     label: 'Laporan Ibu Hamil',
+  },
+  {
+    key: 'pregnantKEK',
+    label: 'Laporan Ibu Hamil KEK',
   },
   {
     key: 'rekapKB',

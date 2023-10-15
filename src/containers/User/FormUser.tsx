@@ -58,8 +58,6 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit, edit = false, defaultValu
   const isDuplicatedEmail = !!$email && !!dataToCheck?.find((item: IValues) => item.email === $email);
   const isDuplicatedPhone = !!$phone && !!dataToCheck?.find((item: IValues) => item.phone === $phone);
 
-  console.log({ isDuplicatedEmail, isDuplicatedPhone, isDuplicatedUsername, isValid: formState.isValid });
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
