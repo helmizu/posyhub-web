@@ -1,10 +1,8 @@
 import Field from '@/components/Field';
-import { swrCallApi } from '@/utils/network';
 import { useYupValidationResolver } from '@/utils/yupResolver';
 import { Button, Input } from 'antd';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import useSWR from 'swr';
 import * as yup from 'yup';
 
 interface IValues {
@@ -20,9 +18,8 @@ interface FormResetPasswordProps {
 }
 
 const FormResetPassword: React.FC<FormResetPasswordProps> = ({ onSubmit }) => {
-  const { data = [] } = useSWR('/api/user/list', (url) => swrCallApi(url, { params: { page: 1, size: 99999 } }));
   const resolver = useYupValidationResolver(schemaValidation);
-  const { control, handleSubmit, watch, formState } = useForm<IValues>({
+  const { control, handleSubmit, formState } = useForm<IValues>({
     defaultValues: {
       password: undefined,
     },

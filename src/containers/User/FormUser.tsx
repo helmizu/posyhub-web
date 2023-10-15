@@ -54,8 +54,8 @@ const FormUser: React.FC<FormUserProps> = ({ onSubmit, edit = false, defaultValu
 
   const dataToCheck = !edit ? data : data?.filter((item: IValues) => item.username !== defaultValues?.username);
 
-  const isDuplicatedUsername = !!$username && !!dataToCheck?.find((item: IValues) => item.username === $username);
-  const isDuplicatedEmail = !!$email && !!dataToCheck?.find((item: IValues) => item.email === $email);
+  const isDuplicatedUsername = !!$username && !!dataToCheck?.find((item: IValues) => item.username?.toLowerCase() === $username?.toLowerCase());
+  const isDuplicatedEmail = !!$email && !!dataToCheck?.find((item: IValues) => item.email?.toLowerCase() === $email?.toLowerCase());
   const isDuplicatedPhone = !!$phone && !!dataToCheck?.find((item: IValues) => item.phone === $phone);
 
   return (

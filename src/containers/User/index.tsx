@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Dropdown, Input, Modal, Table, Typography, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
@@ -8,6 +8,7 @@ import callApi, { swrCallApi } from '@/utils/network';
 import { AxiosRequestConfig } from 'axios';
 import FormResetPassword from './FormResetPassword';
 import { UilEditAlt, UilEllipsisH, UilKeySkeletonAlt } from '@iconscout/react-unicons';
+import { useRouter } from 'next/router';
 
 interface DataType {
   _id: string
@@ -23,7 +24,11 @@ const UserContainer = () => {
   const [addForm, setAddForm] = useState(false);
   const [resetPassword, setResetPassword] = useState('');
   const [editForm, setEditForm] = useState('');
-  const { data = [], mutate, isLoading } = useSWR('/api/user/list', swrCallApi);
+  const [search, setSearch] = useState('');
+  const { data = [], mutate, isLoading } = useSWR(['/api/user/list', { search }], ([url, params]) => swrCallApi(url, { params }));
+  const { data: profile = {} } = useSWR('/api/user/profile', swrCallApi);
+  const isKader = profile?.role?.toLowerCase() === 'kader';
+  const router = useRouter();
 
   const columns: ColumnsType<DataType> = [
     {
@@ -103,7 +108,7 @@ const UserContainer = () => {
       message.error('Tambah data pengguna gagal!');
     }
   };
-  
+
   const onSubmitFormEditUser = async (values: any) => {
     try {
       if (values.password) delete values.password;
@@ -134,12 +139,19 @@ const UserContainer = () => {
       if (addToddler) {
         mutate();
         setResetPassword('');
-        message.success('Reset password berhasil!');
+        message.success('Atur ulang password berhasil!');
       }
     } catch (error) {
-      message.error('Reset password gagal!');
+      message.error('Atur ulang password gagal!');
     }
   };
+
+  useEffect(() => {
+    if (isKader) {
+      router.replace('/');
+    }
+  }, [isKader]);
+
 
   return (
     <div style={{ display: 'flex', gap: 16, flexDirection: 'column' }}>
@@ -149,7 +161,7 @@ const UserContainer = () => {
           <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddForm(true)}>Pengguna</Button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <Input.Search placeholder="Cari di sini..." />
+          <Input.Search placeholder="Cari di sini..." onChange={(e) => setSearch(e.target.value)} value={search} />
         </div>
       </div>
       <Card bordered bodyStyle={{ padding: 0 }}>
