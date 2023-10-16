@@ -33,9 +33,12 @@ const PregnantContainer = () => {
   const [openDetail, setOpenDetail] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [nikFocus, setNikFocus] = useState('');
-  const { data, mutate, isLoading } = useSWR('/api/pregnant/list', swrCallApi);
   const { data: profile = {} } = useSWR('/api/user/profile', swrCallApi);
+  const { data: { pregnantTotal = 0, pregnantThisMonth = 0, kekTotal = 0, } = {}} = useSWR('/api/pregnant/stats', swrCallApi);
   const isKader = profile?.role?.toLowerCase() === 'kader';
+  const [search, setSearch] = useState('');
+  const { data = [], mutate, isLoading } = useSWR(['/api/pregnant/list', { search }], ([url, params]) => swrCallApi(url, { params }));
+
 
   const columns: ColumnsType<DataType> = [
     {
@@ -195,27 +198,20 @@ const PregnantContainer = () => {
       <div style={{ display: 'flex', gap: 16 }}>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Total Ibu Hamil</Typography.Text>
-          <Typography.Title level={5}>0</Typography.Title>
+          <Typography.Title level={5}>{pregnantTotal}</Typography.Title>
         </Card>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Ibu Hamil Hadir {formatDate(new Date(), 'MMMM YYYY')}</Typography.Text>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>0</Typography.Title>
-            <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
+            <Typography.Title level={5}>{pregnantThisMonth}</Typography.Title>
+            <Badge count={`${toPercentage(pregnantThisMonth * 100 / pregnantThisMonth)}%`} color="#697077" />
           </div>
         </Card>
         <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
           <Typography.Text style={{ color: colorTextSecondary }}>Ibu Hamil KEK</Typography.Text>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>0</Typography.Title>
-            <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
-          </div>
-        </Card>
-        <Card bordered style={{ flex: 1 }} bodyStyle={{ padding: 16 }}>
-          <Typography.Text style={{ color: colorTextSecondary }}>Belum Melahirkan</Typography.Text>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography.Title level={5}>0</Typography.Title>
-            <Badge count={`${toPercentage(0 * 100 / 100)}%`} color="#697077" />
+            <Typography.Title level={5}>{kekTotal}</Typography.Title>
+            <Badge count={`${toPercentage(kekTotal * 100 / pregnantThisMonth)}%`} color="#697077" />
           </div>
         </Card>
       </div>
@@ -230,7 +226,7 @@ const PregnantContainer = () => {
           )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <Input.Search placeholder="Cari di sini..." />
+          <Input.Search placeholder="Cari di sini..." onChange={(e) => setSearch(e.target.value)} />
           {isKader && (
             <Dropdown
               trigger={['click']}
